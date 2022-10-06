@@ -4,7 +4,7 @@ import android.content.Context
 
 class DpsToPixels(context: Context) {
 
-    private val ctx = context;
+    private val ctx = context
 
     fun getPixels(dps: Int): Int {
         val scale = ctx.resources.displayMetrics.density

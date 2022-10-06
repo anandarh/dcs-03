@@ -1,16 +1,18 @@
 package com.anandarh.storyapp.ui.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import com.anandarh.storyapp.R
 import com.anandarh.storyapp.databinding.ActivityLoginBinding
 import com.anandarh.storyapp.ui.components.EmailEditText
+import com.anandarh.storyapp.utils.DataState
 import com.anandarh.storyapp.viewmodels.LoginViewModel
+import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,6 +20,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var emailEditText: EmailEditText
+    private lateinit var passwordEditText: TextInputEditText
     private lateinit var buttonSignIn: Button
     private lateinit var buttonSignUp: TextView
 
@@ -31,20 +34,51 @@ class LoginActivity : AppCompatActivity() {
 
         // Initialization
         emailEditText = binding.edLoginEmail
+        passwordEditText = binding.edLoginPassword
         buttonSignIn = binding.btnSignIn
         buttonSignUp = binding.btnSignUp
 
-        buttonSignIn.setOnClickListener {submitSignIn()}
+        buttonSignIn.setOnClickListener { submitSignIn() }
         buttonSignUp.setOnClickListener { gotoRegister() }
+
+        loginViewModel.loginState.observe(this) { result ->
+            when (result) {
+                is DataState.Loading -> isLoading(true)
+                is DataState.Success -> successHandler()
+                is DataState.Error -> errorHandler(result.exception.toString())
+            }
+        }
+    }
+
+    private fun isLoading(boolean: Boolean) {
+        if (boolean) {
+            buttonSignIn.isEnabled = false
+            buttonSignIn.text = this.getText(R.string.loading)
+        } else {
+            buttonSignIn.isEnabled = true
+            buttonSignIn.text = this.getText(R.string.sign_in)
+        }
+    }
+
+    private fun successHandler() {
+        isLoading(false)
+        startActivity(Intent(this, MainActivity::class.java))
+    }
+
+    private fun errorHandler(error: String) {
+        isLoading(false)
+        if (error.contains("unauthorized", ignoreCase = true))
+            Toast.makeText(this, R.string.invalid_credential, Toast.LENGTH_LONG).show()
+        else
+            Toast.makeText(this, R.string.something_wrong, Toast.LENGTH_LONG).show()
     }
 
     private fun submitSignIn() {
-        loginViewModel.login()
         if (!emailEditText.isValidEmail) {
             Toast.makeText(this, "Enter a valid email", Toast.LENGTH_LONG).show()
             return
         }
-        Toast.makeText(this, "Okay", Toast.LENGTH_LONG).show()
+        loginViewModel.login(emailEditText.text.toString(), passwordEditText.text.toString())
 
     }
 

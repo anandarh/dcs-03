@@ -5,7 +5,10 @@
     <string name="enter_email">Enter Email</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="loading">Loading…</string>
     <string name="do_not_have_account">Don\'t have an account?</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="create_an_account_description">Create an account to share your Story</string>
+    <string name="invalid_credential">Email or password is incorrect</string>
+    <string name="something_wrong">Something went wrong. Please try again later</string>
 </resources>
