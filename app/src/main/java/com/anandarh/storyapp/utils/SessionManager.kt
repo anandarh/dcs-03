@@ -2,14 +2,14 @@ package com.anandarh.storyapp.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.anandarh.storyapp.BaseApplication
 import com.anandarh.storyapp.R
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /**
  * Session manager to save and fetch data from SharedPreferences
  */
-class SessionManager @Inject constructor(context: BaseApplication) {
+class SessionManager @Inject constructor(@ApplicationContext context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
 
     companion object {

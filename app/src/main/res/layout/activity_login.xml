@@ -32,10 +32,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/app_name"
-            android:textColor="@color/purple_500"
             android:textSize="45sp"
             android:textStyle="bold|italic"
-            android:fontFamily="@font/pirataone"
+            android:fontFamily="@font/pirata_one"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
