@@ -2,7 +2,6 @@ package com.anandarh.storyapp.ui.components
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.PorterDuff
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.setPadding

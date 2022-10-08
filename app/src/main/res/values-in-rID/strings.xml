@@ -11,4 +11,10 @@
     <string name="loading">Loading…</string>
     <string name="invalid_credential">Email or password is incorrect</string>
     <string name="something_wrong">Something went wrong. Please try again later</string>
+    <string name="min_length_error">Must contain at least %1$d characters</string>
+    <string name="invalid_emil_format">Invalid email format</string>
+    <string name="max_length_error">Maximum is %1$d characters</string>
+    <string name="minmax_length_error">Must contain at least %1$d characters, with a maximum of %2$d characters</string>
+    <string name="required_field_message">This field is required</string>
+    <string name="indonesia">Indonesia</string>
 </resources>

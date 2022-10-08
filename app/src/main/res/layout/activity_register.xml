@@ -55,57 +55,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <com.anandarh.storyapp.ui.components.CustomEditText
             android:id="@+id/ed_register_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/background_edit_text"
-            android:hint="@string/enter_name"
             android:minHeight="48dp"
-            android:paddingHorizontal="12dp"
-            android:textSize="14sp"
+            app:setHint="@string/enter_name"
+            app:isRequired="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.anandarh.storyapp.ui.components.EmailEditText
+        <com.anandarh.storyapp.ui.components.CustomEditText
             android:id="@+id/ed_register_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:hint="@string/enter_email"
             android:minHeight="48dp"
+            app:isRequired="true"
+            app:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ed_register_name" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ly_register_password"
+        <com.anandarh.storyapp.ui.components.CustomEditText
+            android:id="@+id/ed_register_password"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:hintAnimationEnabled="false"
-            app:hintEnabled="false"
+            app:inputType="textPassword"
+            app:isRequired="true"
+            android:minHeight="48dp"
+            app:minLength="6"
+            app:maxLength="12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ed_register_email"
-            app:passwordToggleEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ed_register_password"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/background_edit_text"
-                android:hint="@string/enter_password"
-                android:inputType="textPassword"
-                android:paddingStart="12dp"
-                android:paddingTop="12dp"
-                android:paddingEnd="12dp"
-                android:textSize="14sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintTop_toBottomOf="@id/ed_register_email"/>
 
         <Button
             android:id="@+id/btn_sign_up"
@@ -116,7 +102,7 @@
             android:text="@string/sign_up"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ly_register_password" />
+            app:layout_constraintTop_toBottomOf="@id/ed_register_password" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

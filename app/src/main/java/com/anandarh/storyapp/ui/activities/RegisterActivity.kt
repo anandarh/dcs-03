@@ -1,14 +1,11 @@
 package com.anandarh.storyapp.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.app.AppCompatActivity
 import com.anandarh.storyapp.databinding.ActivityRegisterBinding
 import com.anandarh.storyapp.ui.components.BackButton
-import com.anandarh.storyapp.ui.components.EmailEditText
+import com.anandarh.storyapp.ui.components.CustomEditText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,9 +14,9 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var btnBack: BackButton
     private lateinit var btnSignIn: TextView
-    private lateinit var edName: EditText
-    private lateinit var edEmail: EmailEditText
-    private lateinit var edPassword: EditText
+    private lateinit var edName: CustomEditText
+    private lateinit var edEmail: CustomEditText
+    private lateinit var edPassword: CustomEditText
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

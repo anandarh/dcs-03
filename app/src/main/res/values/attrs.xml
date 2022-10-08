@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- These are the standard attributes that make up a complete theme. -->
+    <declare-styleable name="CustomEditText">
+        <!-- The type of data being placed in a text field, used to help an
+         input method decide how to let the user enter text. -->
+        <attr name="inputType">
+
+            <flag name="text" value="0x00000001" />
+            <!-- Can be combined with <var>text</var> and its variations to
+                 request capitalization of all characters.  Corresponds to
+                 {@link android.text.InputType#TYPE_TEXT_FLAG_CAP_CHARACTERS}. -->
+
+            <!-- Text that will be used as an e-mail address.  Corresponds to
+                 {@link android.text.InputType#TYPE_TEXT_VARIATION_EMAIL_ADDRESS}. -->
+            <flag name="textEmailAddress" value="0x00000020" />
+
+            <!-- Text that is a password.  Corresponds to
+                 {@link android.text.InputType#TYPE_TEXT_VARIATION_PASSWORD}. -->
+            <flag name="textPassword" value="0x00000080" />
+
+        </attr>
+
+        <!-- Set an input filter to constrain the text length to the
+             specified number. -->
+        <attr name="minLength" format="integer" min="0" />
+        <attr name="maxLength" format="integer" min="0" />
+
+        <attr name="isRequired" format="boolean" />
+        <attr name="setHint" format="string" />
+
+    </declare-styleable>
+</resources>

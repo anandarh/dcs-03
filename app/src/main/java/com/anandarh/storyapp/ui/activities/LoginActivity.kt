@@ -9,18 +9,17 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.anandarh.storyapp.R
 import com.anandarh.storyapp.databinding.ActivityLoginBinding
-import com.anandarh.storyapp.ui.components.EmailEditText
+import com.anandarh.storyapp.ui.components.CustomEditText
 import com.anandarh.storyapp.utils.DataState
 import com.anandarh.storyapp.viewmodels.LoginViewModel
-import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var emailEditText: EmailEditText
-    private lateinit var passwordEditText: TextInputEditText
+    private lateinit var emailEditText: CustomEditText
+    private lateinit var passwordEditText: CustomEditText
     private lateinit var buttonSignIn: Button
     private lateinit var buttonSignUp: TextView
 
@@ -74,11 +73,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun submitSignIn() {
-        if (!emailEditText.isValidEmail) {
+        if (!emailEditText.isValid()) {
             Toast.makeText(this, "Enter a valid email", Toast.LENGTH_LONG).show()
             return
+        } else if (!passwordEditText.isValid()) {
+            Toast.makeText(this, "Enter a password", Toast.LENGTH_LONG).show()
+            return
         }
-        loginViewModel.login(emailEditText.text.toString(), passwordEditText.text.toString())
+        //loginViewModel.login(emailEditText.text.toString(), "test1234")
 
     }
 

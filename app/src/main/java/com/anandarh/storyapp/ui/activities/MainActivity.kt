@@ -1,7 +1,7 @@
 package com.anandarh.storyapp.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.anandarh.storyapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
