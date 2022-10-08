@@ -31,6 +31,7 @@ class CustomEditText : TextInputLayout, CoroutineScope {
     private var textHint : String = ""
     private lateinit var checkIcon: Drawable
     private lateinit var crossIcon: Drawable
+    var text: Editable? = null
 
     private var isValidEmail : Boolean = false
     private var isRequired : Boolean = false
@@ -102,6 +103,8 @@ class CustomEditText : TextInputLayout, CoroutineScope {
 
         addView(textInputEditText)
 
+        text = textInputEditText.text
+
         textInputEditText.addTextChangedListener(object : TextWatcher {
             private var searchFor = ""
 
@@ -135,7 +138,6 @@ class CustomEditText : TextInputLayout, CoroutineScope {
             override fun afterTextChanged(p0: Editable?) {
                 // Do nothing.
             }
-
         })
     }
 

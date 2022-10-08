@@ -33,9 +33,13 @@ class SessionManager @Inject constructor(@ApplicationContext context: Context) {
     }
 
     /**
-     * Function to fetch auth token
+     * Function to check token is exist
      */
     fun isLoggedIn(): Boolean {
         return !prefs.getString(USER_TOKEN, null).isNullOrBlank()
+    }
+
+    fun clearSession() {
+        prefs.edit().clear().apply()
     }
 }

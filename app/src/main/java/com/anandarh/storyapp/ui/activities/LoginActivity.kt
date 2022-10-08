@@ -74,13 +74,13 @@ class LoginActivity : AppCompatActivity() {
 
     private fun submitSignIn() {
         if (!emailEditText.isValid()) {
-            Toast.makeText(this, "Enter a valid email", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, emailEditText.error, Toast.LENGTH_LONG).show()
             return
         } else if (!passwordEditText.isValid()) {
-            Toast.makeText(this, "Enter a password", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, passwordEditText.error, Toast.LENGTH_LONG).show()
             return
         }
-        //loginViewModel.login(emailEditText.text.toString(), "test1234")
+        loginViewModel.login(emailEditText.text.toString(), passwordEditText.text.toString())
 
     }
 
