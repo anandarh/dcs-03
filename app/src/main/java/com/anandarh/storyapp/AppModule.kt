@@ -2,6 +2,7 @@ package com.anandarh.storyapp
 import android.content.Context
 import com.anandarh.storyapp.repositories.AuthRepository
 import com.anandarh.storyapp.services.ApiService
+import com.anandarh.storyapp.utils.SessionManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,4 +30,7 @@ class AppModule {
     @Provides
     fun provideAuthRepository(apiService: ApiService) = AuthRepository(apiService)
 
+    @Singleton
+    @Provides
+    fun provideSessionManager(app: Context) = SessionManager(app)
 }
