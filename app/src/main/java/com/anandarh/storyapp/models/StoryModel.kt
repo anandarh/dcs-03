@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ListStoryModel(
+data class StoryModel(
     val id: String,
     val name: String,
     val description: String,

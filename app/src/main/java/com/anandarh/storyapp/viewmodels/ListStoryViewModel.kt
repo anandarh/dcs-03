@@ -5,21 +5,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anandarh.storyapp.models.ResponseModel
-import com.anandarh.storyapp.repositories.AuthRepository
+import com.anandarh.storyapp.repositories.StoriesRepository
 import com.anandarh.storyapp.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel() {
+class ListStoryViewModel @Inject constructor(private val storiesRepository: StoriesRepository) :
+    ViewModel() {
     private val _dataState: MutableLiveData<DataState<ResponseModel>> = MutableLiveData()
 
-    val loginState: LiveData<DataState<ResponseModel>> = _dataState
+    val storiesState: LiveData<DataState<ResponseModel>> = _dataState
 
-    fun login(email: String, password: String) {
+    init {
+        fetchStories()
+    }
+
+    private fun fetchStories() {
         viewModelScope.launch {
-            repository.login(email, password).collect {
+            storiesRepository.fetchStories().collect {
                 _dataState.value = it
             }
         }

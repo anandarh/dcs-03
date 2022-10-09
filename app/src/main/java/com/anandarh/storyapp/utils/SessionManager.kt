@@ -10,7 +10,8 @@ import javax.inject.Inject
  * Session manager to save and fetch data from SharedPreferences
  */
 class SessionManager @Inject constructor(@ApplicationContext context: Context) {
-    private val prefs: SharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+    private val prefs: SharedPreferences =
+        context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
 
     companion object {
         const val USER_TOKEN = "user_token"

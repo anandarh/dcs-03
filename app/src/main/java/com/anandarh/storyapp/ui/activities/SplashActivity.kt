@@ -2,10 +2,10 @@ package com.anandarh.storyapp.ui.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
 import com.anandarh.storyapp.databinding.ActivitySplashBinding
 import com.anandarh.storyapp.utils.SessionManager
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,4 +1,5 @@
 package com.anandarh.storyapp
+
 import android.content.Context
 import com.anandarh.storyapp.Config.BASE_URL
 import com.anandarh.storyapp.services.ApiService
@@ -27,7 +28,7 @@ class AppModule {
     @Provides
     fun provideHTTPLoggingInterceptor(): HttpLoggingInterceptor {
         val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.HEADERS
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
         return interceptor
     }
 

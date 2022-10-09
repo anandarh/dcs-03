@@ -8,6 +8,6 @@ data class ResponseModel(
     val error: Boolean,
     val message: String,
     val loginResult: LoginModel?,
-    val listStory: ListStoryModel?
+    val listStory: ArrayList<StoryModel>?
 ) : Parcelable
 

@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var buttonSignIn: Button
     private lateinit var buttonSignUp: TextView
 
-    private val loginViewModel: LoginViewModel by viewModels()
+    private val viewModel by viewModels<LoginViewModel>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
         buttonSignIn.setOnClickListener { submitSignIn() }
         buttonSignUp.setOnClickListener { gotoRegister() }
 
-        loginViewModel.loginState.observe(this) { result ->
+        viewModel.loginState.observe(this) { result ->
             when (result) {
                 is DataState.Loading -> isLoading(true)
                 is DataState.Success -> successHandler()
@@ -80,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(this, passwordEditText.error, Toast.LENGTH_LONG).show()
             return
         }
-        loginViewModel.login(emailEditText.text.toString(), passwordEditText.text.toString())
+        viewModel.login(emailEditText.text.toString(), passwordEditText.text.toString())
 
     }
 

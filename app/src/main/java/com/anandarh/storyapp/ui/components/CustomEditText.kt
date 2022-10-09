@@ -25,16 +25,16 @@ class CustomEditText : TextInputLayout, CoroutineScope {
     private val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
 
     private var textInputEditText: TextInputEditText
-    private var inputType : Int = InputType.TYPE_CLASS_TEXT
-    private var minLength : Int = 0
-    private var maxLength : Int = 0
-    private var textHint : String = ""
+    private var inputType: Int = InputType.TYPE_CLASS_TEXT
+    private var minLength: Int = 0
+    private var maxLength: Int = 0
+    private var textHint: String = ""
     private lateinit var checkIcon: Drawable
     private lateinit var crossIcon: Drawable
     var text: Editable? = null
 
-    private var isValidEmail : Boolean = false
-    private var isRequired : Boolean = false
+    private var isValidEmail: Boolean = false
+    private var isRequired: Boolean = false
 
     constructor(context: Context) : super(context) {
         textInputEditText = TextInputEditText(context)
@@ -43,7 +43,8 @@ class CustomEditText : TextInputLayout, CoroutineScope {
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomEditText)
-        inputType = typedArray.getInt(R.styleable.CustomEditText_inputType, InputType.TYPE_CLASS_TEXT)
+        inputType =
+            typedArray.getInt(R.styleable.CustomEditText_inputType, InputType.TYPE_CLASS_TEXT)
         isRequired = typedArray.getBoolean(R.styleable.CustomEditText_isRequired, false)
         textHint = typedArray.getString(R.styleable.CustomEditText_setHint) ?: ""
         minLength = typedArray.getInt(R.styleable.CustomEditText_minLength, 0)
@@ -67,7 +68,8 @@ class CustomEditText : TextInputLayout, CoroutineScope {
 
     private fun init() {
 
-        endIconMode = if (inputType == InputType.TYPE_TEXT_VARIATION_PASSWORD) END_ICON_PASSWORD_TOGGLE else END_ICON_NONE
+        endIconMode =
+            if (inputType == InputType.TYPE_TEXT_VARIATION_PASSWORD) END_ICON_PASSWORD_TOGGLE else END_ICON_NONE
         boxStrokeWidth = 0
         boxStrokeWidthFocused = 0
         isHintAnimationEnabled = false
@@ -89,15 +91,18 @@ class CustomEditText : TextInputLayout, CoroutineScope {
         DrawableCompat.setTint(crossIcon, ContextCompat.getColor(context, R.color.red))
 
         textInputEditText.layoutParams = layoutParams
-        textInputEditText.background = ContextCompat.getDrawable(context, R.drawable.background_edit_text)
+        textInputEditText.background =
+            ContextCompat.getDrawable(context, R.drawable.background_edit_text)
         textInputEditText.textSize = 14f
         textInputEditText.setPadding(35)
-        textInputEditText.inputType = inputType+1
+        textInputEditText.inputType = inputType + 1
         textInputEditText.typeface = ResourcesCompat.getFont(context, R.font.roboto)
 
         when (inputType) {
-            InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS -> textInputEditText.hint = context.getString(R.string.enter_email)
-            InputType.TYPE_TEXT_VARIATION_PASSWORD -> textInputEditText.hint = context.getString(R.string.enter_password)
+            InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS -> textInputEditText.hint =
+                context.getString(R.string.enter_email)
+            InputType.TYPE_TEXT_VARIATION_PASSWORD -> textInputEditText.hint =
+                context.getString(R.string.enter_password)
             else -> textInputEditText.hint = textHint
         }
 
@@ -114,25 +119,25 @@ class CustomEditText : TextInputLayout, CoroutineScope {
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-                    if ((inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) or (minLength != 0) or (maxLength != 0))  {
-                        val searchText = s.toString().trim()
-                        if (searchText == searchFor)
-                            return
+                if ((inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) or (minLength != 0) or (maxLength != 0)) {
+                    val searchText = s.toString().trim()
+                    if (searchText == searchFor)
+                        return
 
-                        searchFor = searchText
+                    searchFor = searchText
 
-                        launch {
-                            delay(300)  //debounce timeOut
-                            if (searchText != searchFor)
-                                return@launch
+                    launch {
+                        delay(300)  //debounce timeOut
+                        if (searchText != searchFor)
+                            return@launch
 
-                            if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) {
-                                validEmail(searchText)
-                            } else {
-                                validateLength(searchText)
-                            }
+                        if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) {
+                            validEmail(searchText)
+                        } else {
+                            validateLength(searchText)
                         }
                     }
+                }
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -159,8 +164,7 @@ class CustomEditText : TextInputLayout, CoroutineScope {
             isErrorEnabled = true
             textInputEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, crossIcon, null)
             context.getString(R.string.invalid_emil_format)
-        }
-        else {
+        } else {
             isErrorEnabled = false
             textInputEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
             null
@@ -180,16 +184,17 @@ class CustomEditText : TextInputLayout, CoroutineScope {
         } else if (isRequired && text.isBlank()) {
             isErrorEnabled = true
             context.getString(R.string.required_field_message)
-        }
-        else {
+        } else {
             isErrorEnabled = false
             null
         }
     }
 
-    fun isValid() : Boolean {
+    fun isValid(): Boolean {
         return if (textInputEditText.text.isNullOrBlank()) {
-            if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) validEmail("") else validateLength("")
+            if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) validEmail("") else validateLength(
+                ""
+            )
             error.isNullOrBlank()
         } else {
             error.isNullOrBlank()
