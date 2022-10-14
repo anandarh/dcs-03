@@ -1,17 +1,14 @@
 package com.anandarh.storyapp.ui.components
 
 import android.content.Context
-import android.graphics.Canvas
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.setPadding
 import com.anandarh.storyapp.R
-import com.anandarh.storyapp.utils.DpsToPixels
+import com.anandarh.storyapp.utils.dpsToPixels
 
 
 class BackButton : AppCompatImageButton {
-
-    private lateinit var dpsToPixels: DpsToPixels
 
     constructor(context: Context) : super(context) {
         init()
@@ -30,13 +27,7 @@ class BackButton : AppCompatImageButton {
     }
 
     private fun init() {
-        dpsToPixels = DpsToPixels(context)
-    }
-
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-
-        val pixels = dpsToPixels.getPixels(16)
+        val pixels = dpsToPixels(context, 16)
 
         setImageResource(R.drawable.ic_baseline_arrow_back)
         background = null
@@ -44,4 +35,5 @@ class BackButton : AppCompatImageButton {
         minimumWidth = pixels
         minimumHeight = pixels
     }
+
 }

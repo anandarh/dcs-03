@@ -17,4 +17,5 @@
     <string name="minmax_length_error">Must contain at least %1$d characters, with a maximum of %2$d characters</string>
     <string name="required_field_message">This field is required</string>
     <string name="indonesia">Indonesia</string>
+    <string name="registration_successful">Registration successful! Your account has been created.</string>
 </resources>

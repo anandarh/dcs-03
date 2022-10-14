@@ -59,13 +59,14 @@
             android:id="@+id/ed_register_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_edit_text"
+            android:layout_marginTop="14dp"
             android:minHeight="48dp"
-            app:setHint="@string/enter_name"
+            app:inputType="text"
             app:isRequired="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:setHint="@string/enter_name" />
 
         <com.anandarh.storyapp.ui.components.CustomEditText
             android:id="@+id/ed_register_email"
@@ -73,8 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:minHeight="48dp"
-            app:isRequired="true"
             app:inputType="textEmailAddress"
+            app:isRequired="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ed_register_name" />
@@ -84,14 +85,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
+            android:minHeight="48dp"
             app:inputType="textPassword"
             app:isRequired="true"
-            android:minHeight="48dp"
-            app:minLength="6"
-            app:maxLength="12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ed_register_email"/>
+            app:layout_constraintTop_toBottomOf="@id/ed_register_email"
+            app:maxLength="12"
+            app:minLength="6" />
 
         <Button
             android:id="@+id/btn_sign_up"

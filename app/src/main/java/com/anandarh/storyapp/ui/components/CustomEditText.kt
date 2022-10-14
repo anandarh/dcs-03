@@ -95,7 +95,8 @@ class CustomEditText : TextInputLayout, CoroutineScope {
             ContextCompat.getDrawable(context, R.drawable.background_edit_text)
         textInputEditText.textSize = 14f
         textInputEditText.setPadding(35)
-        textInputEditText.inputType = inputType + 1
+        textInputEditText.inputType =
+            if (inputType == InputType.TYPE_CLASS_TEXT) inputType else inputType + 1
         textInputEditText.typeface = ResourcesCompat.getFont(context, R.font.roboto)
 
         when (inputType) {
@@ -191,13 +192,35 @@ class CustomEditText : TextInputLayout, CoroutineScope {
     }
 
     fun isValid(): Boolean {
-        return if (textInputEditText.text.isNullOrBlank()) {
-            if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) validEmail("") else validateLength(
-                ""
-            )
-            error.isNullOrBlank()
+        if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) validEmail(textInputEditText.text.toString()) else validateLength(
+            textInputEditText.text.toString()
+        )
+        return error.isNullOrBlank()
+    }
+
+    fun setError(string: String?) {
+        if (string.isNullOrBlank()) {
+            isErrorEnabled = false
+            error = null
+            if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) {
+                textInputEditText.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    checkIcon,
+                    null
+                )
+            }
         } else {
-            error.isNullOrBlank()
+            isErrorEnabled = true
+            error = string
+            if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) {
+                textInputEditText.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    crossIcon,
+                    null
+                )
+            }
         }
     }
 

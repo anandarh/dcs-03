@@ -3,7 +3,7 @@ package com.anandarh.storyapp.services
 import com.anandarh.storyapp.models.ResponseModel
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService {
@@ -13,7 +13,7 @@ interface ApiService {
         @Field("name") name: String,
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<ResponseModel>
+    ): Response<ResponseModel>
 
     @FormUrlEncoded
     @POST("login")
