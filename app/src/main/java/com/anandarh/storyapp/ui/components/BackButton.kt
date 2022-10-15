@@ -3,6 +3,7 @@ package com.anandarh.storyapp.ui.components
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import com.anandarh.storyapp.R
 import com.anandarh.storyapp.utils.dpsToPixels
@@ -30,7 +31,7 @@ class BackButton : AppCompatImageButton {
         val pixels = dpsToPixels(context, 16)
 
         setImageResource(R.drawable.ic_baseline_arrow_back)
-        background = null
+        background = ContextCompat.getDrawable(context, R.drawable.background_back_button)
         setPadding(pixels)
         minimumWidth = pixels
         minimumHeight = pixels

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.anandarh.storyapp.R
 import com.anandarh.storyapp.databinding.ActivityDetailStoryBinding
 import com.anandarh.storyapp.models.StoryModel
+import com.anandarh.storyapp.ui.components.BackButton
 import com.squareup.picasso.Picasso
 import org.ocpsoft.prettytime.PrettyTime
 import java.time.ZonedDateTime
@@ -19,7 +20,8 @@ class DetailStoryActivity : AppCompatActivity() {
     private lateinit var ivPhoto: ImageView
     private lateinit var tvName: TextView
     private lateinit var tvDate: TextView
-    private lateinit var tvDescription: TextView
+    private lateinit var tvDescription: TextVieW
+    private lateinit var btnBack: BackButton
 
     private var data: StoryModel? = null
 
@@ -31,6 +33,9 @@ class DetailStoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        btnBack = binding.btnBack
+        btnBack.setOnClickListener { finish() }
 
         with(binding) {
             ivPhoto = ivDetailPhoto
@@ -59,5 +64,7 @@ class DetailStoryActivity : AppCompatActivity() {
                 finish()
             }
         }
+
+
     }
 }
