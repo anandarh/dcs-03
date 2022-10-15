@@ -20,7 +20,7 @@ class DetailStoryActivity : AppCompatActivity() {
     private lateinit var ivPhoto: ImageView
     private lateinit var tvName: TextView
     private lateinit var tvDate: TextView
-    private lateinit var tvDescription: TextVieW
+    private lateinit var tvDescription: TextView
     private lateinit var btnBack: BackButton
 
     private var data: StoryModel? = null
