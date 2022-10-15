@@ -12,10 +12,14 @@ import java.time.ZonedDateTime
 class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
     private var listStory: ArrayList<StoryModel> = ArrayList()
 
+    private lateinit var onItemClickListener: ItemClickListener
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         val binding = ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return StoryViewHolder(binding)
     }
+
+    override fun getItemCount() = listStory.size
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
         with(listStory[position]) {
@@ -24,6 +28,10 @@ class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
                 tvItemDescription.text = description
                 Picasso.get().load(photoUrl).into(ivItemPhoto)
                 tvItemDate.text = PrettyTime().format(ZonedDateTime.parse(createdAt))
+            }
+
+            holder.itemView.setOnClickListener {
+                onItemClickListener.onItemClick(this)
             }
         }
     }
@@ -35,10 +43,14 @@ class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
         notifyItemRangeChanged(size, sizeNew)
     }
 
-    override fun getItemCount(): Int {
-        return listStory.size
+    fun setOnItemClickListener(onItemClickListener: ItemClickListener) {
+        this.onItemClickListener = onItemClickListener
     }
 
     inner class StoryViewHolder(val binding: ItemStoryBinding) :
         RecyclerView.ViewHolder(binding.root)
+
+    interface ItemClickListener {
+        fun onItemClick(story: StoryModel)
+    }
 }

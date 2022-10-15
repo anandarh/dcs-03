@@ -1,5 +1,6 @@
 package com.anandarh.storyapp.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.anandarh.storyapp.R
 import com.anandarh.storyapp.adapters.StoryAdapter
 import com.anandarh.storyapp.databinding.ActivityListStoryBinding
+import com.anandarh.storyapp.models.StoryModel
+import com.anandarh.storyapp.ui.activities.DetailStoryActivity.Companion.EXTRA_STORY
 import com.anandarh.storyapp.utils.DataState
 import com.anandarh.storyapp.utils.SessionManager
 import com.anandarh.storyapp.viewmodels.ListStoryViewModel
@@ -38,11 +41,6 @@ class ListStoryActivity : AppCompatActivity() {
         bottomNavBar = binding.bottomNavBar
         bottomNavBar.setItemSelected(R.id.nav_logout)
 
-        storyAdapter = StoryAdapter()
-
-        rvStories.layoutManager = LinearLayoutManager(this)
-        rvStories.adapter = storyAdapter
-
 
 //        btLogout.setOnClickListener {
 //            sessionManager.clearSession()
@@ -57,12 +55,25 @@ class ListStoryActivity : AppCompatActivity() {
         viewModel.storiesState.observe(this) { result ->
             when (result) {
                 is DataState.Loading -> Log.d("OkHttp", "Loading...")
-                is DataState.Success -> {
-                    storyAdapter.addData(result.data.listStory!!)
-                    Log.d("OkHttp", result.data.listStory.toString())
-                }
+                is DataState.Success -> displayData(result.data.listStory)
                 is DataState.Error -> Log.d("OkHttp", result.exception.toString())
             }
+        }
+    }
+
+    private fun displayData(data: ArrayList<StoryModel>?) {
+        if (data != null) {
+            storyAdapter = StoryAdapter()
+            rvStories.layoutManager = LinearLayoutManager(this)
+            rvStories.adapter = storyAdapter
+            storyAdapter.addData(data)
+            storyAdapter.setOnItemClickListener(object : StoryAdapter.ItemClickListener {
+                override fun onItemClick(story: StoryModel) {
+                    val intent = Intent(this@ListStoryActivity, DetailStoryActivity::class.java)
+                    intent.putExtra(EXTRA_STORY, story)
+                    startActivity(intent)
+                }
+            })
         }
     }
 }
