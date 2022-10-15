@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun successHandler() {
         isLoading(false)
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, ListStoryActivity::class.java))
     }
 
     private fun errorHandler(error: String) {

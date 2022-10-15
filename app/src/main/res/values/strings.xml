@@ -18,4 +18,6 @@
     <string name="required_field_message">This field is required</string>
     <string name="indonesia">Indonesia</string>
     <string name="registration_successful">Registration successful! Your account has been created.</string>
+    <string name="image_story">Image Story</string>
+    <string name="logout">Logout</string>
 </resources>

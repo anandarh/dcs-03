@@ -32,7 +32,7 @@ class SplashActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
 
             intent = if (sessionManager.isLoggedIn())
-                Intent(this@SplashActivity, MainActivity::class.java)
+                Intent(this@SplashActivity, ListStoryActivity::class.java)
             else
                 Intent(this@SplashActivity, LoginActivity::class.java)
 
