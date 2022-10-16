@@ -22,4 +22,5 @@
     <string name="logout">Logout</string>
     <string name="posted_by">Posted by:</string>
     <string name="back">Back</string>
+    <string name="location_with_pin">📍 %1$s</string>
 </resources>

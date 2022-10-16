@@ -10,6 +10,7 @@ import com.anandarh.storyapp.R
 import com.anandarh.storyapp.databinding.ActivityDetailStoryBinding
 import com.anandarh.storyapp.models.StoryModel
 import com.anandarh.storyapp.ui.components.BackButton
+import com.anandarh.storyapp.utils.addressFromCoordinate
 import com.squareup.picasso.Picasso
 import org.ocpsoft.prettytime.PrettyTime
 import java.time.ZonedDateTime
@@ -21,6 +22,7 @@ class DetailStoryActivity : AppCompatActivity() {
     private lateinit var tvName: TextView
     private lateinit var tvDate: TextView
     private lateinit var tvDescription: TextView
+    private lateinit var tvAddress: TextView
     private lateinit var btnBack: BackButton
 
     private var data: StoryModel? = null
@@ -42,6 +44,7 @@ class DetailStoryActivity : AppCompatActivity() {
             tvName = tvDetailName
             tvDate = tvDetailDate
             tvDescription = tvDetailDescription
+            tvAddress = tvDetailAddress
         }
 
         data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
@@ -50,15 +53,21 @@ class DetailStoryActivity : AppCompatActivity() {
             intent.getParcelableExtra(EXTRA_STORY)
 
         with(data) {
-            if (data != null) {
-                Picasso.get().load(this!!.photoUrl).into(ivPhoto)
+            if (this != null) {
+                Picasso.get().load(photoUrl).into(ivPhoto)
                 tvName.text = name
                 tvDate.text = PrettyTime().format(ZonedDateTime.parse(createdAt))
                 tvDescription.text = description
+
+                if (lat != null && this.lon != null) {
+                    val address = addressFromCoordinate(this@DetailStoryActivity, lat, lon, true)
+                    tvAddress.text = this@DetailStoryActivity.getString(R.string.location_with_pin, address)
+                }
+
             } else {
                 Toast.makeText(
                     this@DetailStoryActivity,
-                    baseContext.getString(R.string.something_wrong),
+                    this@DetailStoryActivity.getString(R.string.something_wrong),
                     Toast.LENGTH_LONG
                 ).show()
                 finish()
