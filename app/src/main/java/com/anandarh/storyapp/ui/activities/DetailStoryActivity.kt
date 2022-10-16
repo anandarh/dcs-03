@@ -2,10 +2,15 @@ package com.anandarh.storyapp.ui.activities
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
+import androidx.core.view.marginTop
 import com.anandarh.storyapp.R
 import com.anandarh.storyapp.databinding.ActivityDetailStoryBinding
 import com.anandarh.storyapp.models.StoryModel
@@ -37,6 +42,9 @@ class DetailStoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         btnBack = binding.btnBack
+        val param = btnBack.layoutParams as ViewGroup.MarginLayoutParams
+        param.setMargins(btnBack.marginLeft,btnBack.marginTop + 10, btnBack.marginRight, btnBack.marginRight)
+        btnBack.layoutParams = param
         btnBack.setOnClickListener { finish() }
 
         with(binding) {
