@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.anandarh.storyapp.R
 import com.anandarh.storyapp.adapters.StoryAdapter
 import com.anandarh.storyapp.databinding.ActivityListStoryBinding
 import com.anandarh.storyapp.models.StoryModel
@@ -15,7 +15,6 @@ import com.anandarh.storyapp.ui.activities.DetailStoryActivity.Companion.EXTRA_S
 import com.anandarh.storyapp.utils.DataState
 import com.anandarh.storyapp.utils.SessionManager
 import com.anandarh.storyapp.viewmodels.ListStoryViewModel
-import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -25,7 +24,7 @@ class ListStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListStoryBinding
     private lateinit var rvStories: RecyclerView
     private lateinit var storyAdapter: StoryAdapter
-    private lateinit var bottomNavBar: ChipNavigationBar
+    private lateinit var btnLogout: AppCompatButton
 
     @Inject
     lateinit var sessionManager: SessionManager
@@ -38,17 +37,18 @@ class ListStoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         rvStories = binding.rvStories
-        bottomNavBar = binding.bottomNavBar
-        bottomNavBar.setItemSelected(R.id.nav_logout)
+        btnLogout = binding.btnLogout
 
+        btnLogout.setOnClickListener { logout() }
 
-//        btLogout.setOnClickListener {
-//            sessionManager.clearSession()
-//            startActivity(Intent(this, LoginActivity::class.java))
-//            finish()
-//        }
 
         subscribeUI()
+    }
+
+    private fun logout() {
+        sessionManager.clearSession()
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
     private fun subscribeUI() {
