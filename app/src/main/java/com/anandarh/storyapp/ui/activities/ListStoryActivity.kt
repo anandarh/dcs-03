@@ -15,6 +15,7 @@ import com.anandarh.storyapp.ui.activities.DetailStoryActivity.Companion.EXTRA_S
 import com.anandarh.storyapp.utils.DataState
 import com.anandarh.storyapp.utils.SessionManager
 import com.anandarh.storyapp.viewmodels.ListStoryViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -24,6 +25,7 @@ class ListStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListStoryBinding
     private lateinit var rvStories: RecyclerView
     private lateinit var storyAdapter: StoryAdapter
+    private lateinit var fabAdd: FloatingActionButton
     private lateinit var btnLogout: AppCompatButton
 
     @Inject
@@ -37,10 +39,11 @@ class ListStoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         rvStories = binding.rvStories
+        fabAdd = binding.fabAdd
         btnLogout = binding.btnLogout
 
         btnLogout.setOnClickListener { logout() }
-
+        fabAdd.setOnClickListener { goToAddStory() }
 
         subscribeUI()
     }
@@ -49,6 +52,10 @@ class ListStoryActivity : AppCompatActivity() {
         sessionManager.clearSession()
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
+    }
+
+    private fun goToAddStory() {
+        startActivity(Intent(this, PostStoryActivity::class.java))
     }
 
     private fun subscribeUI() {

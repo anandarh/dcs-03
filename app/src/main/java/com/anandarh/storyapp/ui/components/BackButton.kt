@@ -31,7 +31,6 @@ class BackButton : AppCompatImageButton {
         val pixels = dpsToPixels(context, 16)
 
         setImageResource(R.drawable.ic_baseline_arrow_back)
-        background = ContextCompat.getDrawable(context, R.drawable.background_back_button)
         setPadding(pixels)
         minimumWidth = pixels
         minimumHeight = pixels

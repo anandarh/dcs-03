@@ -23,4 +23,11 @@
     <string name="posted_by">Posted by:</string>
     <string name="back">Back</string>
     <string name="location_with_pin">📍 %1$s</string>
+    <string name="add_story">Add Story</string>
+    <string name="select_or_take_picture">Select or Take\nPicture</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="enter_description">Enter Description</string>
+    <string name="post_story">Post Story</string>
+    <string name="permission_rationale">Enable access so you can start post story</string>
 </resources>

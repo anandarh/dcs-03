@@ -14,6 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/purple_500"
+        android:background="@null"
         tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
     <LinearLayout
