@@ -3,7 +3,6 @@ package com.anandarh.storyapp.ui.components
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import com.anandarh.storyapp.R
 import com.anandarh.storyapp.utils.dpsToPixels

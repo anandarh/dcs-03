@@ -2,7 +2,6 @@ package com.anandarh.storyapp.ui.activities
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -43,7 +42,12 @@ class DetailStoryActivity : AppCompatActivity() {
 
         btnBack = binding.btnBack
         val param = btnBack.layoutParams as ViewGroup.MarginLayoutParams
-        param.setMargins(btnBack.marginLeft,btnBack.marginTop + 10, btnBack.marginRight, btnBack.marginRight)
+        param.setMargins(
+            btnBack.marginLeft,
+            btnBack.marginTop + 10,
+            btnBack.marginRight,
+            btnBack.marginRight
+        )
         btnBack.layoutParams = param
         btnBack.setOnClickListener { finish() }
 
@@ -69,7 +73,8 @@ class DetailStoryActivity : AppCompatActivity() {
 
                 if (lat != null && this.lon != null) {
                     val address = addressFromCoordinate(this@DetailStoryActivity, lat, lon, true)
-                    tvAddress.text = this@DetailStoryActivity.getString(R.string.location_with_pin, address)
+                    tvAddress.text =
+                        this@DetailStoryActivity.getString(R.string.location_with_pin, address)
                 }
 
             } else {

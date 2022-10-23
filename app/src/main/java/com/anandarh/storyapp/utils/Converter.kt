@@ -18,7 +18,12 @@ fun dpsToPixels(context: Context, dps: Int): Int {
 }
 
 @Suppress("DEPRECATION")
-fun addressFromCoordinate(context: Context, latitude: Double, longitude: Double, formatted: Boolean = false): String {
+fun addressFromCoordinate(
+    context: Context,
+    latitude: Double,
+    longitude: Double,
+    formatted: Boolean = false
+): String {
     val addresses: List<Address>?
     val geocoder = Geocoder(context, Locale.getDefault())
 
