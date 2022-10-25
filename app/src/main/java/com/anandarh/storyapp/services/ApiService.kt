@@ -25,12 +25,12 @@ interface ApiService {
     // Add New Story
     @Multipart
     @POST("stories")
-    suspend fun createStory(
-        @Path("description") description: RequestBody,
-        @Path("photo") photo: MultipartBody.Part,
-        @Path("lat") lat: RequestBody?,
-        @Path("lon") lon: RequestBody?,
-    ): ResponseModel
+    suspend fun postStory(
+        @Part("description") description: RequestBody,
+        @Part photo: MultipartBody.Part,
+        @Part("lat") lat: RequestBody?,
+        @Part("lon") lon: RequestBody?,
+    ): Response<ResponseModel>
 
     // Get All Stories
     @GET("stories")

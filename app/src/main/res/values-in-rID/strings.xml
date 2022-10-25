@@ -30,4 +30,6 @@
     <string name="enter_description">Enter Description</string>
     <string name="post_story">Post Story</string>
     <string name="permission_rationale">Enable access so you can start post story</string>
+    <string name="posting">Posting…</string>
+    <string name="no_image_selected">Please take a picture or choose from the gallery</string>
 </resources>

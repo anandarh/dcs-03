@@ -6,6 +6,7 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="loading">Loading…</string>
+    <string name="posting">Posting…</string>
     <string name="do_not_have_account">Don\'t have an account?</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="create_an_account_description">Create an account to share your Story</string>
@@ -30,4 +31,5 @@
     <string name="enter_description">Enter Description</string>
     <string name="post_story">Post Story</string>
     <string name="permission_rationale">Enable access so you can start post story</string>
+    <string name="no_image_selected">"Please take a picture or choose from the gallery"</string>
 </resources>
