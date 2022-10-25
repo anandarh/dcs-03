@@ -22,7 +22,7 @@ class ListStoryViewModel @Inject constructor(private val storiesRepository: Stor
         fetchStories()
     }
 
-    private fun fetchStories() {
+    fun fetchStories() {
         viewModelScope.launch {
             storiesRepository.fetchStories().collect {
                 _dataState.value = it

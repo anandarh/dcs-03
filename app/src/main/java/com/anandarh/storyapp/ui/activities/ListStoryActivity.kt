@@ -3,6 +3,7 @@ package com.anandarh.storyapp.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -27,6 +28,7 @@ class ListStoryActivity : AppCompatActivity() {
     private lateinit var storyAdapter: StoryAdapter
     private lateinit var fabAdd: FloatingActionButton
     private lateinit var btnLogout: AppCompatButton
+    private var refresh: Boolean = false
 
     @Inject
     lateinit var sessionManager: SessionManager
@@ -55,8 +57,16 @@ class ListStoryActivity : AppCompatActivity() {
     }
 
     private fun goToAddStory() {
-        startActivity(Intent(this, PostStoryActivity::class.java))
+        addStoryLauncher.launch(Intent(this, PostStoryActivity::class.java))
     }
+
+    private val addStoryLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                refresh = true
+                viewModel.fetchStories()
+            }
+        }
 
     private fun subscribeUI() {
         viewModel.storiesState.observe(this) { result ->
@@ -73,7 +83,12 @@ class ListStoryActivity : AppCompatActivity() {
             storyAdapter = StoryAdapter()
             rvStories.layoutManager = LinearLayoutManager(this)
             rvStories.adapter = storyAdapter
-            storyAdapter.addData(data)
+
+            if (refresh)
+                storyAdapter.refreshData(data)
+            else
+                storyAdapter.addData(data)
+
             storyAdapter.setOnItemClickListener(object : StoryAdapter.ItemClickListener {
                 override fun onItemClick(story: StoryModel) {
                     val intent = Intent(this@ListStoryActivity, DetailStoryActivity::class.java)
@@ -81,6 +96,9 @@ class ListStoryActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
             })
+
+            if (refresh)
+                refresh = false
         }
     }
 }

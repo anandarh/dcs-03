@@ -43,6 +43,14 @@ class StoryAdapter : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
         notifyItemRangeChanged(size, sizeNew)
     }
 
+    fun refreshData(listStory: ArrayList<StoryModel>) {
+        this.listStory.clear()
+        val size = this.listStory.size
+        this.listStory.addAll(listStory)
+        val sizeNew = this.listStory.size
+        notifyItemRangeChanged(size, sizeNew)
+    }
+
     fun setOnItemClickListener(onItemClickListener: ItemClickListener) {
         this.onItemClickListener = onItemClickListener
     }
