@@ -1,21 +1,27 @@
 package com.anandarh.storyapp.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
 import com.anandarh.storyapp.databinding.ItemLoadingBinding
 import com.anandarh.storyapp.databinding.ItemStoryBinding
 import com.anandarh.storyapp.models.StoryModel
+import com.anandarh.storyapp.ui.activities.DetailStoryActivity
+import com.anandarh.storyapp.ui.activities.ListStoryActivity
 import com.squareup.picasso.Picasso
 import org.ocpsoft.prettytime.PrettyTime
 import java.time.ZonedDateTime
 
 
-class StoryAdapter(private var listStory: ArrayList<StoryModel?>) :
+class StoryAdapter(
+    private val activity: ListStoryActivity,
+    private var listStory: ArrayList<StoryModel?>
+) :
     RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
-    private lateinit var onItemClickListener: ItemClickListener
-
 
     companion object {
         private const val VIEW_TYPE_CONTENT = 0
@@ -65,7 +71,18 @@ class StoryAdapter(private var listStory: ArrayList<StoryModel?>) :
             }
 
             holder.itemView.setOnClickListener {
-                onItemClickListener.onItemClick(this)
+                val intent = Intent(activity, DetailStoryActivity::class.java)
+                intent.putExtra(DetailStoryActivity.EXTRA_STORY, this)
+                val p1: Pair<View, String> =
+                    Pair.create(holder.binding.ivItemPhoto as View, "photo")
+                val p2: Pair<View, String> = Pair.create(holder.binding.tvItemName as View, "name")
+                val p3: Pair<View, String> = Pair.create(holder.binding.tvItemDate as View, "date")
+                val p4: Pair<View, String> =
+                    Pair.create(holder.binding.tvItemDescription as View, "description")
+                val options =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(activity, p1, p2, p3, p4)
+                activity.startActivity(intent, options.toBundle())
+
             }
         }
     }
@@ -93,10 +110,6 @@ class StoryAdapter(private var listStory: ArrayList<StoryModel?>) :
         }
     }
 
-    fun setOnItemClickListener(onItemClickListener: ItemClickListener) {
-        this.onItemClickListener = onItemClickListener
-    }
-
     open class StoryViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView)
 
@@ -105,8 +118,4 @@ class StoryAdapter(private var listStory: ArrayList<StoryModel?>) :
 
     inner class LoadingViewHolder(binding: ItemLoadingBinding) :
         StoryViewHolder(binding.root)
-
-    interface ItemClickListener {
-        fun onItemClick(story: StoryModel)
-    }
 }

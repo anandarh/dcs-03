@@ -14,6 +14,7 @@
         android:layout_marginEnd="36dp"
         android:gravity="center"
         android:text="@string/indonesia"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_login_title"
+            android:id="@+id/tv_app_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pirata_one"
@@ -35,6 +36,7 @@
             android:text="@string/app_name"
             android:textSize="45sp"
             android:textStyle="bold|italic"
+            android:transitionName="app_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,7 +51,7 @@
             app:isRequired="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_login_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_app_name" />
 
         <com.anandarh.storyapp.ui.components.CustomEditText
             android:id="@+id/ed_login_password"

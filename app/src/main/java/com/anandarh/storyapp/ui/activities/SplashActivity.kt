@@ -5,10 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import com.anandarh.storyapp.databinding.ActivitySplashBinding
 import com.anandarh.storyapp.utils.SessionManager
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
@@ -36,9 +39,18 @@ class SplashActivity : AppCompatActivity() {
             else
                 Intent(this@SplashActivity, LoginActivity::class.java)
 
-            startActivity(intent)
-            finish()
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this@SplashActivity,
+                binding.tvAppName as View,
+                "app_name"
+            )
+
+            startActivity(intent, options.toBundle())
 
         }, DURATION)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            finish()
+        }, DURATION + 500)
     }
 }

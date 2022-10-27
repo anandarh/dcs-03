@@ -49,7 +49,7 @@ class DetailStoryActivity : AppCompatActivity() {
             btnBack.marginRight
         )
         btnBack.layoutParams = param
-        btnBack.setOnClickListener { finish() }
+        btnBack.setOnClickListener { supportFinishAfterTransition() }
 
         with(binding) {
             ivPhoto = ivDetailPhoto

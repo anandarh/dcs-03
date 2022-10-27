@@ -12,12 +12,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.anandarh.storyapp.adapters.StoryAdapter
 import com.anandarh.storyapp.databinding.ActivityListStoryBinding
 import com.anandarh.storyapp.models.StoryModel
-import com.anandarh.storyapp.ui.activities.DetailStoryActivity.Companion.EXTRA_STORY
 import com.anandarh.storyapp.utils.DataState
 import com.anandarh.storyapp.utils.SessionManager
 import com.anandarh.storyapp.viewmodels.ListStoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class ListStoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
@@ -43,7 +43,7 @@ class ListStoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
         binding.fabAdd.setOnClickListener { goToAddStory() }
         binding.srStories.setOnRefreshListener(this)
 
-        storyAdapter = StoryAdapter(arrayListOf())
+        storyAdapter = StoryAdapter(this, arrayListOf())
         layoutManager = LinearLayoutManager(this)
 
         binding.rvStories.layoutManager = layoutManager
@@ -105,14 +105,6 @@ class ListStoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
         handleLoading(false)
         if (data != null) {
             storyAdapter.addData(data, refresh)
-
-            storyAdapter.setOnItemClickListener(object : StoryAdapter.ItemClickListener {
-                override fun onItemClick(story: StoryModel) {
-                    val intent = Intent(this@ListStoryActivity, DetailStoryActivity::class.java)
-                    intent.putExtra(EXTRA_STORY, story)
-                    startActivity(intent)
-                }
-            })
 
             if (refresh)
                 refresh = false
