@@ -6,9 +6,9 @@ import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.anandarh.storyapp.adapters.StoryAdapter
 import com.anandarh.storyapp.databinding.ActivityListStoryBinding
 import com.anandarh.storyapp.models.StoryModel
@@ -16,19 +16,18 @@ import com.anandarh.storyapp.ui.activities.DetailStoryActivity.Companion.EXTRA_S
 import com.anandarh.storyapp.utils.DataState
 import com.anandarh.storyapp.utils.SessionManager
 import com.anandarh.storyapp.viewmodels.ListStoryViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ListStoryActivity : AppCompatActivity() {
+class ListStoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var binding: ActivityListStoryBinding
-    private lateinit var rvStories: RecyclerView
     private lateinit var storyAdapter: StoryAdapter
-    private lateinit var fabAdd: FloatingActionButton
-    private lateinit var btnLogout: AppCompatButton
+    private lateinit var layoutManager: LinearLayoutManager
+
     private var refresh: Boolean = false
+    private var isLoading: Boolean = false
 
     @Inject
     lateinit var sessionManager: SessionManager
@@ -40,12 +39,27 @@ class ListStoryActivity : AppCompatActivity() {
         binding = ActivityListStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        rvStories = binding.rvStories
-        fabAdd = binding.fabAdd
-        btnLogout = binding.btnLogout
+        binding.btnLogout.setOnClickListener { logout() }
+        binding.fabAdd.setOnClickListener { goToAddStory() }
+        binding.srStories.setOnRefreshListener(this)
 
-        btnLogout.setOnClickListener { logout() }
-        fabAdd.setOnClickListener { goToAddStory() }
+        storyAdapter = StoryAdapter(arrayListOf())
+        layoutManager = LinearLayoutManager(this)
+
+        binding.rvStories.layoutManager = layoutManager
+        binding.rvStories.adapter = storyAdapter
+        binding.rvStories.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!isLoading) {
+                    if (layoutManager.findLastCompletelyVisibleItemPosition() == storyAdapter.itemCount - 1) {
+                        //bottom of list!
+                        refresh = false
+                        viewModel.fetchStories(refresh)
+                    }
+                }
+            }
+        })
 
         subscribeUI()
     }
@@ -64,30 +78,33 @@ class ListStoryActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 refresh = true
-                viewModel.fetchStories()
+                binding.srStories.isRefreshing = refresh
+                viewModel.fetchStories(refresh)
             }
         }
 
     private fun subscribeUI() {
         viewModel.storiesState.observe(this) { result ->
             when (result) {
-                is DataState.Loading -> Log.d("OkHttp", "Loading...")
-                is DataState.Success -> displayData(result.data.listStory)
-                is DataState.Error -> Log.d("OkHttp", result.exception.toString())
+                is DataState.Loading -> handleLoading(true)
+                is DataState.Success -> handleSuccess(result.data.listStory)
+                is DataState.Error -> handleError(result.exception)
             }
         }
     }
 
-    private fun displayData(data: ArrayList<StoryModel>?) {
-        if (data != null) {
-            storyAdapter = StoryAdapter()
-            rvStories.layoutManager = LinearLayoutManager(this)
-            rvStories.adapter = storyAdapter
+    private fun handleLoading(show: Boolean) {
+        isLoading = show
+        if (show)
+            storyAdapter.addLoading()
+        else
+            storyAdapter.removeLoading()
+    }
 
-            if (refresh)
-                storyAdapter.refreshData(data)
-            else
-                storyAdapter.addData(data)
+    private fun handleSuccess(data: ArrayList<StoryModel>?) {
+        handleLoading(false)
+        if (data != null) {
+            storyAdapter.addData(data, refresh)
 
             storyAdapter.setOnItemClickListener(object : StoryAdapter.ItemClickListener {
                 override fun onItemClick(story: StoryModel) {
@@ -99,6 +116,18 @@ class ListStoryActivity : AppCompatActivity() {
 
             if (refresh)
                 refresh = false
+
+            binding.srStories.isRefreshing = refresh
         }
+    }
+
+    private fun handleError(exception: Exception) {
+        handleLoading(false)
+        Log.d("OkHttp", exception.toString())
+    }
+
+    override fun onRefresh() {
+        refresh = true
+        viewModel.fetchStories(refresh)
     }
 }

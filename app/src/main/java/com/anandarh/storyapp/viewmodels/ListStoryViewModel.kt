@@ -18,15 +18,22 @@ class ListStoryViewModel @Inject constructor(private val storiesRepository: Stor
 
     val storiesState: LiveData<DataState<ResponseModel>> = _dataState
 
+    private var currentPage: Int = 1
+    private var pagePerSize: Int = 10
+
     init {
-        fetchStories()
+        fetchStories(true)
     }
 
-    fun fetchStories() {
+    fun fetchStories(refresh: Boolean) {
+        if (refresh) {
+            currentPage = 1
+        }
         viewModelScope.launch {
-            storiesRepository.fetchStories().collect {
+            storiesRepository.fetchStories(currentPage, pagePerSize).collect {
                 _dataState.value = it
             }
         }
+        currentPage++
     }
 }
