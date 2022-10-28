@@ -15,6 +15,7 @@ class SessionManager @Inject constructor(@ApplicationContext context: Context) {
 
     companion object {
         const val USER_TOKEN = "user_token"
+        const val USER_LANGUAGE = "user_language"
     }
 
     /**
@@ -40,7 +41,23 @@ class SessionManager @Inject constructor(@ApplicationContext context: Context) {
         return !prefs.getString(USER_TOKEN, null).isNullOrBlank()
     }
 
+    /**
+     * Function to save auth token
+     */
+    fun setLanguage(language: String) {
+        val editor = prefs.edit()
+        editor.putString(USER_LANGUAGE, language)
+        editor.apply()
+    }
+
+    /**
+     * Function to fetch auth token
+     */
+    fun getLanguage(): String {
+        return prefs.getString(USER_LANGUAGE, "en")!!
+    }
+
     fun clearSession() {
-        prefs.edit().clear().apply()
+        prefs.edit().remove(USER_TOKEN).apply()
     }
 }
