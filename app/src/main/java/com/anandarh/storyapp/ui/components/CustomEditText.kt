@@ -1,6 +1,7 @@
 package com.anandarh.storyapp.ui.components
 
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.InputType
@@ -109,8 +110,6 @@ class CustomEditText : TextInputLayout, CoroutineScope {
 
         addView(textInputEditText)
 
-        text = textInputEditText.text
-
         textInputEditText.addTextChangedListener(object : TextWatcher {
             private var searchFor = ""
 
@@ -145,6 +144,11 @@ class CustomEditText : TextInputLayout, CoroutineScope {
                 // Do nothing.
             }
         })
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        text = textInputEditText.text
     }
 
     private fun validEmail(text: String) {

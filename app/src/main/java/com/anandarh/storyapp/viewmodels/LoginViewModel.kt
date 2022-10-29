@@ -1,5 +1,6 @@
 package com.anandarh.storyapp.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,8 @@ class LoginViewModel @Inject constructor(private val repository: AuthRepository)
     val loginState: LiveData<DataState<ResponseModel>> = _dataState
 
     fun login(email: String, password: String) {
+        Log.d("GGWPS", "email $email")
+        Log.d("GGWPS", "password $password")
         viewModelScope.launch {
             repository.login(email, password).collect {
                 _dataState.value = it

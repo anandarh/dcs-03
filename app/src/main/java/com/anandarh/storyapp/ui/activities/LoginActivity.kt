@@ -9,7 +9,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.anandarh.storyapp.R
 import com.anandarh.storyapp.databinding.ActivityLoginBinding
-import com.anandarh.storyapp.ui.components.CustomEditText
 import com.anandarh.storyapp.utils.DataState
 import com.anandarh.storyapp.utils.LocalizationHelper
 import com.anandarh.storyapp.utils.SessionManager
@@ -22,8 +21,6 @@ import javax.inject.Inject
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var emailEditText: CustomEditText
-    private lateinit var passwordEditText: CustomEditText
     private lateinit var buttonSignIn: Button
     private lateinit var buttonSignUp: TextView
 
@@ -42,9 +39,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialization
-        emailEditText = binding.edLoginEmail
-        passwordEditText = binding.edLoginPassword
         buttonSignIn = binding.btnSignIn
         buttonSignUp = binding.btnSignUp
 
@@ -127,14 +121,17 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun submitSignIn() {
-        if (!emailEditText.isValid()) {
-            Toast.makeText(this, emailEditText.error, Toast.LENGTH_LONG).show()
+        if (!binding.edLoginEmail.isValid()) {
+            Toast.makeText(this, binding.edLoginEmail.error, Toast.LENGTH_LONG).show()
             return
-        } else if (!passwordEditText.isValid()) {
-            Toast.makeText(this, passwordEditText.error, Toast.LENGTH_LONG).show()
+        } else if (!binding.edLoginPassword.isValid()) {
+            Toast.makeText(this, binding.edLoginPassword.error, Toast.LENGTH_LONG).show()
             return
         }
-        viewModel.login(emailEditText.text.toString(), passwordEditText.text.toString())
+        viewModel.login(
+            binding.edLoginEmail.text.toString(),
+            binding.edLoginPassword.text.toString()
+        )
 
     }
 
