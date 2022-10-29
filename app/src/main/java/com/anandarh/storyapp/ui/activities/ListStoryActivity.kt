@@ -3,6 +3,7 @@ package com.anandarh.storyapp.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -95,6 +96,8 @@ class ListStoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
 
     private fun handleLoading(show: Boolean) {
         isLoading = show
+        binding.rvStories.visibility = View.VISIBLE
+        binding.llError.visibility = View.GONE
         if (show)
             storyAdapter.addLoading()
         else
@@ -102,6 +105,8 @@ class ListStoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
     }
 
     private fun handleSuccess(data: ArrayList<StoryModel>?) {
+        binding.rvStories.visibility = View.VISIBLE
+        binding.llError.visibility = View.GONE
         handleLoading(false)
         if (data != null) {
             storyAdapter.addData(data, refresh)
@@ -115,6 +120,8 @@ class ListStoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
 
     private fun handleError(exception: Exception) {
         handleLoading(false)
+        binding.rvStories.visibility = View.GONE
+        binding.llError.visibility = View.VISIBLE
         Log.d("OkHttp", exception.toString())
     }
 

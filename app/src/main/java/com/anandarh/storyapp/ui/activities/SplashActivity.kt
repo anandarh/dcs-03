@@ -21,7 +21,7 @@ class SplashActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
 
     companion object {
-        const val DURATION: Long = 1500
+        const val DURATION: Long = 500
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,18 +34,20 @@ class SplashActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
 
-            intent = if (sessionManager.isLoggedIn())
-                Intent(this@SplashActivity, ListStoryActivity::class.java)
-            else
-                Intent(this@SplashActivity, LoginActivity::class.java)
+            if (sessionManager.isLoggedIn()) {
+                val intent = Intent(this@SplashActivity, ListStoryActivity::class.java)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this@SplashActivity, LoginActivity::class.java)
 
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                this@SplashActivity,
-                binding.tvAppName as View,
-                "app_name"
-            )
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this@SplashActivity,
+                    binding.tvAppName as View,
+                    "app_name"
+                )
 
-            startActivity(intent, options.toBundle())
+                startActivity(intent, options.toBundle())
+            }
 
         }, DURATION)
 
