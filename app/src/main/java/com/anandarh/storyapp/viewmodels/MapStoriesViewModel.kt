@@ -12,28 +12,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ListStoryViewModel @Inject constructor(private val storiesRepository: StoriesRepository) :
+class MapStoriesViewModel @Inject constructor(private val storiesRepository: StoriesRepository) :
     ViewModel() {
-    private val _dataState: MutableLiveData<DataState<ResponseModel>> = MutableLiveData()
+    private var _dataState: MutableLiveData<DataState<ResponseModel>> = MutableLiveData()
 
-    val storiesState: LiveData<DataState<ResponseModel>> = _dataState
+    val storiesWithLocation: LiveData<DataState<ResponseModel>> = _dataState
 
-    private var currentPage: Int = 1
-    private var pagePerSize: Int = 10
-
-    init {
-        fetchStories(true)
-    }
-
-    fun fetchStories(refresh: Boolean) {
-        if (refresh) {
-            currentPage = 1
-        }
+    fun fetchStoriesWithLocation() {
         viewModelScope.launch {
-            storiesRepository.fetchStories(currentPage, pagePerSize, 0).collect {
+            storiesRepository.fetchStories(1, 20, 1).collect {
                 _dataState.value = it
             }
         }
-        currentPage++
     }
 }

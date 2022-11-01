@@ -20,11 +20,11 @@ import java.io.FileOutputStream
 import javax.inject.Inject
 
 class StoriesRepository @Inject constructor(private val apiService: ApiService) {
-    fun fetchStories(page: Int, size: Int): Flow<DataState<ResponseModel>> = flow {
+    fun fetchStories(page: Int, size: Int, location: Int): Flow<DataState<ResponseModel>> = flow {
         emit(DataState.Loading)
         delay(3000)
         try {
-            val result = apiService.fetchStories(page, size, 0)
+            val result = apiService.fetchStories(page, size, location)
             emit(DataState.Success(result))
         } catch (e: Exception) {
             emit(DataState.Error(e))
