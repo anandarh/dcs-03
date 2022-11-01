@@ -33,4 +33,5 @@
     <string name="post_story">Post Story</string>
     <string name="permission_rationale">Enable access so you can start post story</string>
     <string name="no_image_selected">"Please take a picture or choose from the gallery"</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

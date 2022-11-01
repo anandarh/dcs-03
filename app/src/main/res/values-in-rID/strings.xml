@@ -33,4 +33,5 @@
     <string name="posting">Posting…</string>
     <string name="no_image_selected">Silakan ambil gambar atau pilih dari galeri</string>
     <string name="empty">Data Kosong</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

@@ -42,6 +42,7 @@ class ListStoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
 
         binding.btnLogout.setOnClickListener { logout() }
         binding.fabAdd.setOnClickListener { goToAddStory() }
+        binding.fabMaps.setOnClickListener { goToMaps() }
         binding.srStories.setOnRefreshListener(this)
 
         storyAdapter = StoryAdapter(this, arrayListOf())
@@ -73,6 +74,10 @@ class ListStoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
 
     private fun goToAddStory() {
         addStoryLauncher.launch(Intent(this, PostStoryActivity::class.java))
+    }
+
+    private fun goToMaps() {
+        startActivity(Intent(this, MapsActivity::class.java))
     }
 
     private val addStoryLauncher =
