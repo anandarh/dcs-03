@@ -110,6 +110,7 @@ class LoginActivity : AppCompatActivity() {
     private fun successHandler() {
         isLoading(false)
         startActivity(Intent(this, ListStoryActivity::class.java))
+        finish()
     }
 
     private fun errorHandler(error: String) {
