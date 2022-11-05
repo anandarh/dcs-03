@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import com.anandarh.storyapp.R
 import com.anandarh.storyapp.databinding.ActivityMapsBinding
 import com.anandarh.storyapp.models.StoryModel
+import com.anandarh.storyapp.ui.components.ImageMarker
 import com.anandarh.storyapp.utils.DataState
 import com.anandarh.storyapp.viewmodels.MapStoriesViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,6 +33,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val viewModel by viewModels<MapStoriesViewModel>()
 
     private val boundsBuilder = LatLngBounds.Builder()
+    private val imageMarker = ImageMarker()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,7 +112,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         data?.forEach { story ->
             val latLng = LatLng(story.lat!!, story.lon!!)
-            mMap.addMarker(MarkerOptions().position(latLng).title(story.name))
+            imageMarker.addMarker(this, story.photoUrl, latLng, mMap)
             boundsBuilder.include(latLng)
         }
 
