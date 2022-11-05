@@ -2,6 +2,7 @@ package com.anandarh.storyapp.ui.activities
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -72,9 +73,14 @@ class DetailStoryActivity : AppCompatActivity() {
                 tvDescription.text = description
 
                 if (lat != null && this.lon != null) {
-                    val address = addressFromCoordinate(this@DetailStoryActivity, lat, lon, true)
-                    tvAddress.text =
-                        this@DetailStoryActivity.getString(R.string.location_with_pin, address)
+                    try {
+                        val address =
+                            addressFromCoordinate(this@DetailStoryActivity, lat, lon, true)
+                        tvAddress.text =
+                            this@DetailStoryActivity.getString(R.string.location_with_pin, address)
+                    } catch (e: java.lang.Exception) {
+                        Log.e("ERROR", e.toString())
+                    }
                 }
 
             } else {

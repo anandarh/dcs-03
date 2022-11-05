@@ -88,7 +88,6 @@ class PostStoryActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                 getString(R.string.permission_rationale),
                 REQUEST_CODE_PERMISSIONS,
                 Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )
         else
@@ -102,45 +101,29 @@ class PostStoryActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
     private fun requestPermissionStorage() {
         permissionType = 2
-        // Ask for one permission
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P)
-            EasyPermissions.requestPermissions(
-                this,
-                getString(R.string.permission_rationale),
-                REQUEST_CODE_PERMISSIONS,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-        else
-            EasyPermissions.requestPermissions(
-                this,
-                getString(R.string.permission_rationale),
-                REQUEST_CODE_PERMISSIONS,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
+        EasyPermissions.requestPermissions(
+            this,
+            getString(R.string.permission_rationale),
+            REQUEST_CODE_PERMISSIONS,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
     }
 
-    private fun hasPermissionAll(): Boolean =
+    private fun hasPermissionCamera(): Boolean =
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) EasyPermissions.hasPermissions(
             this,
             Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE
         ) else EasyPermissions.hasPermissions(
             this,
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE
+            Manifest.permission.CAMERA
         )
 
     private fun hasPermissionStorage(): Boolean =
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) EasyPermissions.hasPermissions(
             this,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE
-        ) else EasyPermissions.hasPermissions(
-            this,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
+        ) else true
 
     private fun initializeUI() {
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
@@ -199,7 +182,7 @@ class PostStoryActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         fileName = contentUri.toString()
 
         // Request camera permissions
-        if (hasPermissionAll()) {
+        if (hasPermissionCamera()) {
             cameraLauncher.launch(contentUri)
         } else {
             // Ask for one permission
