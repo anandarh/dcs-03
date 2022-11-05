@@ -10,7 +10,6 @@ import android.widget.LinearLayout
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.ui.IconGenerator
 import java.io.IOException
@@ -24,8 +23,7 @@ class ImageMarker {
     private val myExecutor = Executors.newSingleThreadExecutor()
     private val myHandler = Handler(Looper.getMainLooper())
 
-    fun addMarker(context: Context, imageUrl: String, loc: LatLng, map: GoogleMap){
-        var marker : Marker?
+    fun addMarker(context: Context, imageUrl: String, loc: LatLng, map: GoogleMap) {
         myExecutor.execute {
             val result = getBitmapFromURL(imageUrl)
             myHandler.post {
@@ -37,9 +35,11 @@ class ImageMarker {
                 imageView.scaleType = ImageView.ScaleType.CENTER_CROP
                 imageView.setImageBitmap(result)
                 iconGenerator.setContentView(imageView)
- 
-                val markerOptions = MarkerOptions().position(loc).icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon()))
-                marker = map.addMarker(markerOptions)
+
+                val markerOptions = MarkerOptions().position(loc)
+                    .icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon()))
+                val marker = map.addMarker(markerOptions)
+                marker?.tag = loc
             }
         }
     }

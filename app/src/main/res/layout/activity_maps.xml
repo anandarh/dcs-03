@@ -13,6 +13,18 @@
         android:layout_height="match_parent"
         tools:layout="@android:layout/simple_gallery_item" />
 
+    <!--suppress AndroidDomInspection -->
+    <com.anandarh.storyapp.ui.components.BackButton
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_back_button"
+        android:contentDescription="@string/back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/ll_loading"
         android:layout_width="wrap_content"

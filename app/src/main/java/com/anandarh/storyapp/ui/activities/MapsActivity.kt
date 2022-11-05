@@ -1,6 +1,8 @@
 package com.anandarh.storyapp.ui.activities
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
@@ -21,8 +23,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -41,9 +43,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.btnBack.setOnClickListener { finish() }
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
@@ -69,8 +72,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun getMyLocation() {
         if (ContextCompat.checkSelfPermission(
-                this.applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                this.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             mMap.isMyLocationEnabled = true
@@ -79,14 +81,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                getMyLocation()
-            }
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            getMyLocation()
         }
+    }
 
     private fun subscribeUI() {
         viewModel.storiesWithLocation.observe(this) { result ->
@@ -101,16 +102,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun handleLoading(show: Boolean) {
-        if (show)
-            binding.llLoading.visibility = View.VISIBLE
-        else
-            binding.llLoading.visibility = View.GONE
+        if (show) binding.llLoading.visibility = View.VISIBLE
+        else binding.llLoading.visibility = View.GONE
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
     private fun handleSuccess(data: ArrayList<StoryModel>?) {
         handleLoading(false)
 
-        data?.forEach { story ->
+        data?.distinctBy { it.name }?.forEach { story ->
             val latLng = LatLng(story.lat!!, story.lon!!)
             imageMarker.addMarker(this, story.photoUrl, latLng, mMap)
             boundsBuilder.include(latLng)
@@ -126,6 +126,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 100
             )
         )
+
+        mMap.setOnMarkerClickListener { marker ->
+            val story = data?.first {
+                LatLng(it.lat!!, it.lon!!) == marker.tag
+            }
+
+            if (story != null) {
+                val intent = Intent(this, DetailStoryActivity::class.java)
+                intent.putExtra(DetailStoryActivity.EXTRA_STORY, story)
+                startActivity(intent)
+            }
+
+            false
+        }
     }
 
     private fun handleError(exception: Exception) {

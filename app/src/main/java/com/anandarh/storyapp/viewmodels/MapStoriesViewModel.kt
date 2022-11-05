@@ -20,7 +20,7 @@ class MapStoriesViewModel @Inject constructor(private val storiesRepository: Sto
 
     fun fetchStoriesWithLocation() {
         viewModelScope.launch {
-            storiesRepository.fetchStories(1, 20, 1).collect {
+            storiesRepository.fetchStories(1, 50, 1).collect {
                 _dataState.value = it
             }
         }
