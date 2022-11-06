@@ -1,19 +1,17 @@
 package com.anandarh.storyapp.ui.activities
 
+import StoryAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.anandarh.storyapp.adapters.StoryAdapter
+import com.anandarh.storyapp.adapters.LoadingStateAdapter
 import com.anandarh.storyapp.databinding.ActivityListStoryBinding
-import com.anandarh.storyapp.models.StoryModel
-import com.anandarh.storyapp.utils.DataState
 import com.anandarh.storyapp.utils.SessionManager
 import com.anandarh.storyapp.viewmodels.ListStoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,10 +23,6 @@ class ListStoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
 
     private lateinit var binding: ActivityListStoryBinding
     private lateinit var storyAdapter: StoryAdapter
-    private lateinit var layoutManager: LinearLayoutManager
-
-    private var refresh: Boolean = false
-    private var isLoading: Boolean = false
 
     @Inject
     lateinit var sessionManager: SessionManager
@@ -45,23 +39,7 @@ class ListStoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
         binding.fabMaps.setOnClickListener { goToMaps() }
         binding.srStories.setOnRefreshListener(this)
 
-        storyAdapter = StoryAdapter(this, arrayListOf())
-        layoutManager = LinearLayoutManager(this)
-
-        binding.rvStories.layoutManager = layoutManager
-        binding.rvStories.adapter = storyAdapter
-        binding.rvStories.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (!isLoading) {
-                    if (layoutManager.findLastCompletelyVisibleItemPosition() == storyAdapter.itemCount - 1) {
-                        //bottom of list!
-                        refresh = false
-                        viewModel.fetchStories(refresh)
-                    }
-                }
-            }
-        })
+        storyAdapter = StoryAdapter(this)
 
         subscribeUI()
     }
@@ -83,55 +61,43 @@ class ListStoryActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
     private val addStoryLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                refresh = true
-                binding.srStories.isRefreshing = refresh
-                viewModel.fetchStories(refresh)
+                (binding.rvStories.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
+                    0,
+                    0
+                )
+                storyAdapter.refresh()
             }
         }
 
     private fun subscribeUI() {
-        viewModel.storiesState.observe(this) { result ->
-            when (result) {
-                is DataState.Loading -> handleLoading(true)
-                is DataState.Success -> handleSuccess(result.data.listStory)
-                is DataState.Error -> handleError(result.exception)
+        binding.rvStories.layoutManager = LinearLayoutManager(this)
+        binding.rvStories.adapter = storyAdapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                storyAdapter.retry()
+            }
+        )
+
+        viewModel.fetchStories.observe(this) {
+            storyAdapter.submitData(lifecycle, it)
+            storyAdapter.addLoadStateListener { state ->
+                binding.srStories.isRefreshing = state.refresh is LoadState.Loading
             }
         }
+
+        storyAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    (binding.rvStories.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
+                        0,
+                        0
+                    )
+                }
+            }
+        })
     }
 
-    private fun handleLoading(show: Boolean) {
-        isLoading = show
-        binding.rvStories.visibility = View.VISIBLE
-        binding.llError.visibility = View.GONE
-        if (show)
-            storyAdapter.addLoading()
-        else
-            storyAdapter.removeLoading()
-    }
-
-    private fun handleSuccess(data: ArrayList<StoryModel>?) {
-        binding.rvStories.visibility = View.VISIBLE
-        binding.llError.visibility = View.GONE
-        handleLoading(false)
-        if (data != null) {
-            storyAdapter.addData(data, refresh)
-
-            if (refresh)
-                refresh = false
-
-            binding.srStories.isRefreshing = refresh
-        }
-    }
-
-    private fun handleError(exception: Exception) {
-        handleLoading(false)
-        binding.rvStories.visibility = View.GONE
-        binding.llError.visibility = View.VISIBLE
-        Log.d("OkHttp", exception.toString())
-    }
 
     override fun onRefresh() {
-        refresh = true
-        viewModel.fetchStories(refresh)
+        storyAdapter.refresh()
     }
 }

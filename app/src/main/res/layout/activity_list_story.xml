@@ -111,14 +111,14 @@
         android:id="@+id/fab_maps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="70dp"
         android:backgroundTint="@color/purple_200"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_baseline_map"
-        app:tint="@color/white"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

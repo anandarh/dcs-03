@@ -34,4 +34,6 @@
     <string name="no_image_selected">Silakan ambil gambar atau pilih dari galeri</string>
     <string name="empty">Data Kosong</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="refresh">Refresh</string>
+    <string name="request_failed">Request Gagal</string>
 </resources>

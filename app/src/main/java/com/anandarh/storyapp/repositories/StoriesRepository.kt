@@ -2,8 +2,15 @@ package com.anandarh.storyapp.repositories
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.anandarh.storyapp.models.ResponseModel
+import com.anandarh.storyapp.models.StoryModel
 import com.anandarh.storyapp.services.ApiService
+import com.anandarh.storyapp.sources.StoryPagingSource
 import com.anandarh.storyapp.utils.DataState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -20,9 +27,20 @@ import java.io.FileOutputStream
 import javax.inject.Inject
 
 class StoriesRepository @Inject constructor(private val apiService: ApiService) {
+    fun fetchStories(): LiveData<PagingData<StoryModel>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(apiService)
+            }
+        ).liveData
+    }
+
     fun fetchStories(page: Int, size: Int, location: Int): Flow<DataState<ResponseModel>> = flow {
         emit(DataState.Loading)
-        delay(3000)
+        delay(1000)
         try {
             val result = apiService.fetchStories(page, size, location)
             emit(DataState.Success(result))
