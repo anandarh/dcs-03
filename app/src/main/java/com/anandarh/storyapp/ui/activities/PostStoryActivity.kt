@@ -1,6 +1,8 @@
 package com.anandarh.storyapp.ui.activities
 
 import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.TakePicture
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider.getUriForFile
 import com.anandarh.storyapp.R
 import com.anandarh.storyapp.databinding.ActivityAddStoryBinding
@@ -19,6 +22,8 @@ import com.anandarh.storyapp.utils.DataState
 import com.anandarh.storyapp.utils.FileHelper.Companion.fileFromUri
 import com.anandarh.storyapp.utils.exceptionResponse
 import com.anandarh.storyapp.viewmodels.PostStoryViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.squareup.picasso.Picasso
 import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
@@ -31,21 +36,28 @@ import java.util.*
 class PostStoryActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     private lateinit var binding: ActivityAddStoryBinding
-
-    private var fileName: String? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val viewModel by viewModels<PostStoryViewModel>()
 
+    private var fileName: String? = null
     private var permissionType: Int? = null
+    private var lat: Double = -6.914744
+    private var lon: Double = 107.609810
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null)
             fileName = savedInstanceState.getString("fileName")
 
+        binding = ActivityAddStoryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        initializeUI()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        initializeAction()
         subscribeUI()
+        getMyLocation()
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
@@ -125,10 +137,7 @@ class PostStoryActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             Manifest.permission.READ_EXTERNAL_STORAGE
         ) else true
 
-    private fun initializeUI() {
-        binding = ActivityAddStoryBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
+    private fun initializeAction() {
         binding.btnBack.setOnClickListener { finish() }
         binding.btnCamera.setOnClickListener { openCamera() }
         binding.btnGallery.setOnClickListener { openExplorer() }
@@ -142,6 +151,30 @@ class PostStoryActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                 is DataState.Success -> successHandler()
                 is DataState.Error -> errorHandler(dataState.exception)
             }
+        }
+    }
+
+    private fun getMyLocation() {
+        if (ContextCompat.checkSelfPermission(
+                this.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    lat = location.latitude
+                    lon = location.longitude
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            getMyLocation()
         }
     }
 
@@ -240,8 +273,8 @@ class PostStoryActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         viewModel.postStory(
             description = binding.etDescription.text.toString(),
             photo = fileFromUri(this, Uri.parse(fileName))!!,
-            lat = -6.914744,
-            lon = 107.609810
+            lat = lat,
+            lon = lon
         )
     }
 
