@@ -18,9 +18,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -64,25 +66,18 @@ class StoriesRepository @Inject constructor(private val apiService: ApiService) 
         }
 
         val filePart = MultipartBody.Part.createFormData(
-            "photo", fPhoto.name, RequestBody.create(
-                MediaType.parse("image/*"), fPhoto
-            )
+            "photo", fPhoto.name, fPhoto
+                .asRequestBody("image/*".toMediaTypeOrNull())
         )
 
-        val fDescription: RequestBody = RequestBody.create(
-            MediaType.parse("text/plain"),
-            description
-        )
+        val fDescription: RequestBody = description
+            .toRequestBody("text/plain".toMediaTypeOrNull())
 
-        val fLat: RequestBody = RequestBody.create(
-            MediaType.parse("text/plain"),
-            lat.toString()
-        )
+        val fLat: RequestBody = lat.toString()
+            .toRequestBody("text/plain".toMediaTypeOrNull())
 
-        val fLon: RequestBody = RequestBody.create(
-            MediaType.parse("text/plain"),
-            lon.toString()
-        )
+        val fLon: RequestBody = lon.toString()
+            .toRequestBody("text/plain".toMediaTypeOrNull())
 
 
         val result = apiService.postStory(
