@@ -31,18 +31,18 @@ class ListStoryViewModelTest {
     val mainCoroutineRule = MainCoroutineRule()
 
     @Mock
-    private lateinit var viewModel: ListStoryViewModel
+    private lateinit var listStoryViewModel: ListStoryViewModel
 
     private val dummyStory = DummyData.generateDummyStories()
 
     @Test
-    fun `Get story list success`() = mainCoroutineRule.testScope.runTest {
+    fun `Get Story List Success`() = mainCoroutineRule.testScope.runTest {
 
         val expectedStories = MutableLiveData<PagingData<StoryModel>>()
         expectedStories.value = PagingData.from(dummyStory)
-        `when`(viewModel.fetchStories).thenReturn(expectedStories)
+        `when`(listStoryViewModel.fetchStories).thenReturn(expectedStories)
 
-        val actualStories = viewModel.fetchStories.value
+        val actualStories = listStoryViewModel.fetchStories.value
         val differ = AsyncPagingDataDiffer(
             diffCallback = StoryAdapter.DIFF_CALLBACK,
             updateCallback = listUpdateCallback,
@@ -51,7 +51,7 @@ class ListStoryViewModelTest {
         )
         differ.submitData(actualStories!!)
 
-        Mockito.verify(viewModel).fetchStories
+        Mockito.verify(listStoryViewModel).fetchStories
         assertNotNull(actualStories)
         assertNotNull(differ.snapshot())
         assertEquals(dummyStory.size, differ.snapshot().size)

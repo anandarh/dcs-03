@@ -43,4 +43,13 @@ object DummyData {
             loginResult = null
         )
     }
+
+    fun generateDummyMapStoriesResponse(): ResponseModel {
+        return ResponseModel(
+            error = false,
+            message = "success",
+            listStory = ArrayList(generateDummyStories()),
+            loginResult = null
+        )
+    }
 }

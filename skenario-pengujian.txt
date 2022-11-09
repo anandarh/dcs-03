@@ -1,18 +1,24 @@
-A. List Story.
+A. Login
+    - Memastikan data tidak null.
+    - Memastikan login sukses, State.Success dan dapatkan response.
+    - Memastikan login gagal dan State.Error.
+
+B. Register
+    - Memastikan data tidak null.
+    - Memastikan register sukses, State.Success dan dapatkan response.
+    - Memastikan register gagal dan State.Error.
+
+C. List Story
    - Memastikan data tidak null.
    - Memastikan jumlah data sesuai dengan yang diharapkan.
 
-B. Login
-    - Memastikan data tidak null.
-    - Login sukses, State.Success dan dapatkan response
-    - Login gagal dan State.Error
+D. Maps List Story
+   - Memastikan data tidak null.
+   - Memastikan pengambilan sukses, State.Success dan dapatkan response.
+   - Memastikan jumlah data sesuai dengan yang diharapkan.
+   - Memastikan register gagal dan State.Error.
 
-C. Register
+E. Post Story
     - Memastikan data tidak null.
-    - Register sukses State.Success dan dapatkan response
-    - Login gagal dan State.Error
-
-C. Post Story
-    - Memastikan data tidak null.
-    - Register sukses State.Success dan dapatkan response
-    - Login gagal dan State.Error
+    - Register sukses, State.Success dan dapatkan response.
+    - Login gagal dan State.Error.
