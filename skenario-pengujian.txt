@@ -1,0 +1,3 @@
+A. Ketika berhasil memuat data list story.
+   - Memastikan data tidak null.
+   - Memastikan jumlah data sesuai dengan yang diharapkan.

@@ -55,7 +55,7 @@ class StoryAdapter(private val activity: Activity) :
         RecyclerView.ViewHolder(binding.root)
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<StoryModel>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<StoryModel>() {
             override fun areItemsTheSame(oldItem: StoryModel, newItem: StoryModel): Boolean {
                 return oldItem == newItem
             }
