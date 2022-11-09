@@ -34,4 +34,13 @@ object DummyData {
             listStory = null
         )
     }
+
+    fun generateDummyRegisterResponse(): ResponseModel {
+        return ResponseModel(
+            error = false,
+            message = "success",
+            listStory = null,
+            loginResult = null
+        )
+    }
 }
