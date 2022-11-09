@@ -3,5 +3,16 @@ A. List Story.
    - Memastikan jumlah data sesuai dengan yang diharapkan.
 
 B. Login
-    - Login sukses dan dapatkan response
+    - Memastikan data tidak null.
+    - Login sukses, State.Success dan dapatkan response
+    - Login gagal dan State.Error
+
+C. Register
+    - Memastikan data tidak null.
+    - Register sukses State.Success dan dapatkan response
+    - Login gagal dan State.Error
+
+C. Post Story
+    - Memastikan data tidak null.
+    - Register sukses State.Success dan dapatkan response
     - Login gagal dan State.Error

@@ -35,7 +35,7 @@ object DummyData {
         )
     }
 
-    fun generateDummyRegisterResponse(): ResponseModel {
+    fun generateDummyDefaultResponse(): ResponseModel {
         return ResponseModel(
             error = false,
             message = "success",

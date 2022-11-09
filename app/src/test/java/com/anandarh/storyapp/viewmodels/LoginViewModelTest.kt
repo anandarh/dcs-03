@@ -63,17 +63,21 @@ class LoginViewModelTest {
 
         advanceUntilIdle()
 
+        val actualResponse = loginViewModel.loginState.getOrAwaitValue()
+
+        assertNotNull(actualResponse)
         assertEquals(
-            loginViewModel.loginState.getOrAwaitValue(),
+            actualResponse,
             DataState.Success(dummyLoginResponse)
         )
+        assertTrue(actualResponse is DataState.Success)
     }
 
     @Test
     fun `Login Failed`(): Unit = mainCoroutineRule.testScope.runTest {
 
         val response: Flow<DataState<ResponseModel>> = flow {
-            emit(DataState.Error(null))
+            emit(DataState.Error(Exception("Unauthorized")))
         }
 
         `when`(
@@ -90,9 +94,9 @@ class LoginViewModelTest {
 
         advanceUntilIdle()
 
-        assertEquals(
-            loginViewModel.loginState.getOrAwaitValue(),
-            DataState.Error(null)
-        )
+        val actualResponse = loginViewModel.loginState.getOrAwaitValue()
+
+        assertNotNull(actualResponse)
+        assertTrue(actualResponse is DataState.Error)
     }
 }

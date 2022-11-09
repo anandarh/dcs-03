@@ -2,7 +2,7 @@ package com.anandarh.storyapp.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.anandarh.storyapp.models.ResponseModel
-import com.anandarh.storyapp.repositories.AuthRepository
+import com.anandarh.storyapp.repositories.StoriesRepository
 import com.anandarh.storyapp.utils.DataState
 import com.anandarh.storyapp.utils.DummyData
 import com.anandarh.storyapp.utils.MainCoroutineRule
@@ -20,10 +20,11 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
+import java.io.File
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class RegisterViewModelTest {
+class PostStoryViewModelTest {
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
@@ -32,40 +33,42 @@ class RegisterViewModelTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     @Mock
-    private lateinit var authRepository: AuthRepository
-    private lateinit var registerViewModel: RegisterViewModel
+    private lateinit var storiesRepository: StoriesRepository
+    private lateinit var postStoryViewModel: PostStoryViewModel
 
     private val dummyResponse = DummyData.generateDummyDefaultResponse()
 
     @Before
     fun setUp() {
-        registerViewModel = RegisterViewModel(authRepository)
+        postStoryViewModel = PostStoryViewModel(storiesRepository)
     }
 
     @Test
-    fun `Register Success`(): Unit = mainCoroutineRule.testScope.runTest {
+    fun `Post New Story Success`(): Unit = mainCoroutineRule.testScope.runTest {
 
         val response: Flow<DataState<ResponseModel>> = flow {
             emit(DataState.Success(dummyResponse))
         }
 
         Mockito.`when`(
-            authRepository.register(
-                email = "test@gmail.com",
-                password = "test1234",
-                name = "test"
+            storiesRepository.postStory(
+                description = "Test",
+                photo = File("/path"),
+                lat = 0.0,
+                lon = 0.0
             )
         ).thenReturn(response)
 
-        registerViewModel.register(
-            email = "test@gmail.com",
-            password = "test1234",
-            name = "test"
+        postStoryViewModel.postStory(
+            description = "Test",
+            photo = File("/path"),
+            lat = 0.0,
+            lon = 0.0
         )
 
         advanceUntilIdle()
 
-        val actualResponse = registerViewModel.registerState.getOrAwaitValue()
+        val actualResponse = postStoryViewModel.postState.getOrAwaitValue()
 
         assertNotNull(actualResponse)
         assertEquals(
@@ -76,29 +79,31 @@ class RegisterViewModelTest {
     }
 
     @Test
-    fun `Register Failed`(): Unit = mainCoroutineRule.testScope.runTest {
+    fun `Post New Story Failed`(): Unit = mainCoroutineRule.testScope.runTest {
 
         val response: Flow<DataState<ResponseModel>> = flow {
             emit(DataState.Error(Exception()))
         }
 
         Mockito.`when`(
-            authRepository.register(
-                email = "test@gmail.com",
-                password = "test1234",
-                name = "test"
+            storiesRepository.postStory(
+                description = "Test",
+                photo = File("/path"),
+                lat = 0.0,
+                lon = 0.0
             )
         ).thenReturn(response)
 
-        registerViewModel.register(
-            email = "test@gmail.com",
-            password = "test1234",
-            name = "test"
+        postStoryViewModel.postStory(
+            description = "Test",
+            photo = File("/path"),
+            lat = 0.0,
+            lon = 0.0
         )
 
         advanceUntilIdle()
 
-        val actualResponse = registerViewModel.registerState.getOrAwaitValue()
+        val actualResponse = postStoryViewModel.postState.getOrAwaitValue()
 
         assertNotNull(actualResponse)
         assertTrue(actualResponse is DataState.Error)

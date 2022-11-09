@@ -8,8 +8,8 @@ import com.google.gson.Gson
 import java.util.*
 
 
-fun exceptionResponse(exception: Exception?): ResponseModel {
-    return Gson().fromJson(exception?.message.toString(), ResponseModel::class.java)
+fun exceptionResponse(exception: Exception): ResponseModel {
+    return Gson().fromJson(exception.message.toString(), ResponseModel::class.java)
 }
 
 fun dpsToPixels(context: Context, dps: Int): Int {

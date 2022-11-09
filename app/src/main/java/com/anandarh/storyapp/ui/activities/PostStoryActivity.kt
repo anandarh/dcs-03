@@ -200,7 +200,7 @@ class PostStoryActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         finish()
     }
 
-    private fun errorHandler(exception: Exception?) {
+    private fun errorHandler(exception: Exception) {
         isLoading(false)
         val response = exceptionResponse(exception)
         Toast.makeText(this, response.message, Toast.LENGTH_LONG).show()
