@@ -73,7 +73,7 @@ class RegisterActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun errorHandler(exception: Exception) {
+    private fun errorHandler(exception: Exception?) {
         isLoading(false)
         val response = exceptionResponse(exception)
         if (response.message.contains("email", true))

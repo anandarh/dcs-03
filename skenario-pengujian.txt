@@ -1,3 +1,7 @@
-A. Ketika berhasil memuat data list story.
+A. List Story.
    - Memastikan data tidak null.
    - Memastikan jumlah data sesuai dengan yang diharapkan.
+
+B. Login
+    - Login sukses dan dapatkan response
+    - Login gagal dan State.Error
