@@ -1,5 +1,7 @@
-package com.anandarh.storyapp
+package com.anandarh.storyapp.utils
 
+import com.anandarh.storyapp.models.LoginModel
+import com.anandarh.storyapp.models.ResponseModel
 import com.anandarh.storyapp.models.StoryModel
 
 object DummyData {
@@ -18,5 +20,18 @@ object DummyData {
             storyList.add(story)
         }
         return storyList
+    }
+
+    fun generateDummyLoginResponse(): ResponseModel {
+        return ResponseModel(
+            error = false,
+            message = "success",
+            loginResult = LoginModel(
+                userId = "user-yj5pc_LARC_AgK61",
+                name = "Arif Faizin",
+                token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLXlqNXBjX0xBUkNfQWdLNjEiLCJpYXQiOjE2NDE3OTk5NDl9.flEMaQ7zsdYkxuyGbiXjEDXO8kuDTcI__3UjCwt6R_I"
+            ),
+            listStory = null
+        )
     }
 }

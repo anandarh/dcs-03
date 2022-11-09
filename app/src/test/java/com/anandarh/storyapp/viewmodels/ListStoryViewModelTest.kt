@@ -6,11 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.anandarh.storyapp.DummyData
-import com.anandarh.storyapp.MainCoroutineRule
 import com.anandarh.storyapp.models.StoryModel
+import com.anandarh.storyapp.utils.DummyData
+import com.anandarh.storyapp.utils.MainCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Rule
@@ -37,7 +36,7 @@ class ListStoryViewModelTest {
     private val dummyStory = DummyData.generateDummyStories()
 
     @Test
-    fun `Get StoryList Success`() = mainCoroutineRule.testScope.runTest {
+    fun `Get story list success`() = mainCoroutineRule.testScope.runTest {
 
         val expectedStories = MutableLiveData<PagingData<StoryModel>>()
         expectedStories.value = PagingData.from(dummyStory)
@@ -51,8 +50,6 @@ class ListStoryViewModelTest {
             workerDispatcher = mainCoroutineRule.dispatcher
         )
         differ.submitData(actualStories!!)
-
-        advanceUntilIdle()
 
         Mockito.verify(viewModel).fetchStories
         assertNotNull(actualStories)

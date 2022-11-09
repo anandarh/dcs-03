@@ -162,7 +162,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun handleError(exception: Exception) {
+    private fun handleError(exception: Exception?) {
         handleLoading(false)
         Toast.makeText(this, exception.toString(), Toast.LENGTH_LONG).show()
     }
