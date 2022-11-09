@@ -42,7 +42,7 @@ class StoriesRepository @Inject constructor(private val apiService: ApiService) 
 
     fun fetchStories(page: Int, size: Int, location: Int): Flow<DataState<ResponseModel>> = flow {
         emit(DataState.Loading)
-        delay(1000)
+        delay(DELAY_RESPONSE)
         try {
             val result = apiService.fetchStories(page, size, location)
             emit(DataState.Success(result))
@@ -113,5 +113,9 @@ class StoriesRepository @Inject constructor(private val apiService: ApiService) 
         bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
 
         return@withContext file
+    }
+
+    companion object {
+        private const val DELAY_RESPONSE = 1000L // millisecond
     }
 }

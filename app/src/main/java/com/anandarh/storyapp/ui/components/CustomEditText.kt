@@ -5,12 +5,12 @@ import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.InputType
-import android.text.TextWatcher
 import android.util.AttributeSet
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.setPadding
+import androidx.core.widget.addTextChangedListener
 import com.anandarh.storyapp.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -33,6 +33,7 @@ class CustomEditText : TextInputLayout, CoroutineScope {
     private lateinit var checkIcon: Drawable
     private lateinit var crossIcon: Drawable
     var text: Editable? = null
+    private var searchFor = ""
 
     private var isValidEmail: Boolean = false
     private var isRequired: Boolean = false
@@ -110,38 +111,26 @@ class CustomEditText : TextInputLayout, CoroutineScope {
 
         addView(textInputEditText)
 
-        textInputEditText.addTextChangedListener(object : TextWatcher {
-            private var searchFor = ""
+        textInputEditText.addTextChangedListener(onTextChanged = { s, _, _, _ ->
 
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                // Do nothing.
-            }
+            if ((inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) or (minLength != 0) or (maxLength != 0)) {
+                val searchText = s.toString().trim()
+                if (searchText == searchFor)
+                    return@addTextChangedListener
 
-            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                searchFor = searchText
 
-                if ((inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) or (minLength != 0) or (maxLength != 0)) {
-                    val searchText = s.toString().trim()
-                    if (searchText == searchFor)
-                        return
+                launch {
+                    delay(300)  //debounce timeOut
+                    if (searchText != searchFor)
+                        return@launch
 
-                    searchFor = searchText
-
-                    launch {
-                        delay(300)  //debounce timeOut
-                        if (searchText != searchFor)
-                            return@launch
-
-                        if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) {
-                            validEmail(searchText)
-                        } else {
-                            validateLength(searchText)
-                        }
+                    if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) {
+                        validEmail(searchText)
+                    } else {
+                        validateLength(searchText)
                     }
                 }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                // Do nothing.
             }
         })
     }

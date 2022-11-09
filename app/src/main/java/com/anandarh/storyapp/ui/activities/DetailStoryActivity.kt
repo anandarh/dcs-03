@@ -32,10 +32,6 @@ class DetailStoryActivity : AppCompatActivity() {
 
     private var data: StoryModel? = null
 
-    companion object {
-        const val EXTRA_STORY = "extra_story"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailStoryBinding.inflate(layoutInflater)
@@ -93,6 +89,9 @@ class DetailStoryActivity : AppCompatActivity() {
             }
         }
 
+    }
 
+    companion object {
+        const val EXTRA_STORY = "extra_story"
     }
 }
