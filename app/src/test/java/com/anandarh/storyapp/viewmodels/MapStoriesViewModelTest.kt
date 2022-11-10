@@ -50,7 +50,7 @@ class MapStoriesViewModelTest {
         }
 
         Mockito.`when`(
-            storiesRepository.fetchStories(1,50,1)
+            storiesRepository.fetchStories(1, 50, 1)
         ).thenReturn(response)
 
         mapStoriesViewModel.fetchStoriesWithLocation()
@@ -84,7 +84,7 @@ class MapStoriesViewModelTest {
         }
 
         Mockito.`when`(
-            storiesRepository.fetchStories(1,50,1)
+            storiesRepository.fetchStories(1, 50, 1)
         ).thenReturn(response)
 
         mapStoriesViewModel.fetchStoriesWithLocation()

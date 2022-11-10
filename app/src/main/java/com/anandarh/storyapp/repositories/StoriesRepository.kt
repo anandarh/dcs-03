@@ -3,15 +3,13 @@ package com.anandarh.storyapp.repositories
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.lifecycle.LiveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.liveData
+import androidx.paging.*
+import com.anandarh.storyapp.database.StoryDatabase
 import com.anandarh.storyapp.models.ResponseModel
 import com.anandarh.storyapp.models.StoryModel
 import com.anandarh.storyapp.services.ApiService
-import com.anandarh.storyapp.sources.StoryPagingSource
 import com.anandarh.storyapp.utils.DataState
+import com.anandarh.storyapp.utils.StoryRemoteMediator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -28,14 +26,20 @@ import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
 
-class StoriesRepository @Inject constructor(private val apiService: ApiService) {
+class StoriesRepository @Inject constructor(
+    private val database: StoryDatabase,
+    private val apiService: ApiService
+) {
     fun fetchStories(): LiveData<PagingData<StoryModel>> {
+        @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
+            remoteMediator = StoryRemoteMediator(database, apiService),
             pagingSourceFactory = {
-                StoryPagingSource(apiService)
+//                StoryPagingSource(apiService)
+                database.storyDao().getStories()
             }
         ).liveData
     }

@@ -2,6 +2,7 @@ package com.anandarh.storyapp
 
 import android.content.Context
 import com.anandarh.storyapp.Config.BASE_URL
+import com.anandarh.storyapp.database.StoryDatabase
 import com.anandarh.storyapp.services.ApiService
 import com.anandarh.storyapp.utils.AuthInterceptor
 import dagger.Module
@@ -28,9 +29,9 @@ class AppModule {
     @Provides
     fun provideHTTPLoggingInterceptor(): HttpLoggingInterceptor {
         val interceptor = HttpLoggingInterceptor()
-        interceptor.level = if(BuildConfig.DEBUG)
+        interceptor.level = if (BuildConfig.DEBUG)
             HttpLoggingInterceptor.Level.BODY
-         else
+        else
             HttpLoggingInterceptor.Level.NONE
 
         return interceptor
@@ -45,6 +46,12 @@ class AppModule {
             .addInterceptor(loggingInterceptor)
             .addInterceptor(AuthInterceptor(context))
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideDatabase(context: BaseApplication): StoryDatabase {
+        return StoryDatabase.getDatabase(context)
     }
 
     @Singleton

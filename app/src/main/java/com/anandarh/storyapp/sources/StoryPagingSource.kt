@@ -9,15 +9,11 @@ import kotlinx.coroutines.delay
 
 class StoryPagingSource(private val apiService: ApiService) : PagingSource<Int, StoryModel>() {
 
-    private companion object {
-        const val INITIAL_PAGE_INDEX = 1
-    }
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, StoryModel> {
         wrapEspressoIdlingResource {
             return try {
                 val position = params.key ?: INITIAL_PAGE_INDEX
-                delay(1000)
+                delay(DELAY)
                 val responseData = apiService.fetchStories(position, params.loadSize, 0)
                 LoadResult.Page(
                     data = responseData.listStory ?: arrayListOf(),
@@ -35,6 +31,11 @@ class StoryPagingSource(private val apiService: ApiService) : PagingSource<Int, 
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
+    }
+
+    private companion object {
+        const val INITIAL_PAGE_INDEX = 1
+        const val DELAY = 1000L
     }
 
 }
