@@ -1,24 +1,41 @@
-A. Login
-    - Memastikan data tidak null.
-    - Memastikan login sukses, State.Success dan dapatkan response.
-    - Memastikan login gagal dan State.Error.
+A. LoginViewModelTest
+    - Ketika login berhasil
+        - Memastikan mengembalikan State.Success
+        - Memastikan data tidak null.
+        - Memastikan data respon sesuai.
 
-B. Register
-    - Memastikan data tidak null.
-    - Memastikan register sukses, State.Success dan dapatkan response.
-    - Memastikan register gagal dan State.Error.
+    - Ketika login gagal
+        - Memastikan mengembalikan State.Error
 
-C. List Story
-   - Memastikan data tidak null.
-   - Memastikan jumlah data sesuai dengan yang diharapkan.
+B. RegisterViewModelTest
+    - Ketika register berhasil
+        - Memastikan mengembalikan State.Success
+        - Memastikan data tidak null.
+        - Memastikan data respon sesuai.
 
-D. Maps List Story
-   - Memastikan data tidak null.
-   - Memastikan pengambilan sukses, State.Success dan dapatkan response.
-   - Memastikan jumlah data sesuai dengan yang diharapkan.
-   - Memastikan register gagal dan State.Error.
+    - Ketika register gagal
+        - Memastikan mengembalikan State.Error
 
-E. Post Story
-    - Memastikan data tidak null.
-    - Register sukses, State.Success dan dapatkan response.
-    - Login gagal dan State.Error.
+C. ListStoryViewModelTest
+    - Ketika load list story berhasil
+        - Memastikan data tidak null.
+        - Memastikan jumlah data sesuai dengan yang diharapkan.
+
+D. MapStoriesViewModelTest
+    - Ketika load map stories berhasil
+        - Memastikan mengembalikan State.Success
+        - Memastikan data tidak null.
+        - Memastikan data respon sesuai.
+        - Memastikan jumlah data sesuai dengan yang diharapkan.
+
+    - Ketika load map stories gagal
+        - Memastikan mengembalikan State.Error
+
+E. PostStoryViewModelTest
+    - Ketika post story berhasil
+        - Memastikan mengembalikan State.Success
+        - Memastikan data tidak null.
+        - Memastikan data respon sesuai.
+
+    - Ketika post story gagal
+        - Memastikan mengembalikan State.Error
