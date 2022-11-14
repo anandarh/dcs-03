@@ -6,11 +6,11 @@ import kotlinx.coroutines.test.*
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
+@Suppress("DEPRECATION")
 @ExperimentalCoroutinesApi
-class MainCoroutineRule(
-    val dispatcher: TestDispatcher = StandardTestDispatcher(),
-    val testScope: TestScope = TestScope(dispatcher),
-) : TestWatcher() {
+class MainCoroutineRule(private val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()) :
+    TestWatcher(),
+    TestCoroutineScope by createTestCoroutineScope(TestCoroutineDispatcher() + TestCoroutineExceptionHandler() + dispatcher) {
     override fun starting(description: Description) {
         super.starting(description)
         Dispatchers.setMain(dispatcher)
@@ -18,6 +18,7 @@ class MainCoroutineRule(
 
     override fun finished(description: Description) {
         super.finished(description)
+        cleanupTestCoroutines()
         Dispatchers.resetMain()
     }
 }

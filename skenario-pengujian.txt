@@ -19,6 +19,7 @@ B. RegisterViewModelTest
 C. ListStoryViewModelTest
     - Ketika load list story berhasil
         - Memastikan data tidak null.
+        - Memastikan data respon sesuai.
         - Memastikan jumlah data sesuai dengan yang diharapkan.
 
 D. MapStoriesViewModelTest

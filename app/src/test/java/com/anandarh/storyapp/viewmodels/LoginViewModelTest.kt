@@ -10,8 +10,7 @@ import com.anandarh.storyapp.utils.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -21,6 +20,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
+@Suppress("DEPRECATION")
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class LoginViewModelTest {
@@ -43,7 +43,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `Login Success`(): Unit = mainCoroutineRule.testScope.runTest {
+    fun `Login Success`(): Unit = mainCoroutineRule.runBlockingTest {
 
         val response: Flow<DataState<ResponseModel>> = flow {
             emit(DataState.Success(dummyLoginResponse))
@@ -61,8 +61,6 @@ class LoginViewModelTest {
             password = "test1234"
         )
 
-        advanceUntilIdle()
-
         val actualResponse = loginViewModel.loginState.getOrAwaitValue()
 
         assertNotNull(actualResponse)
@@ -74,7 +72,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `Login Failed`(): Unit = mainCoroutineRule.testScope.runTest {
+    fun `Login Failed`(): Unit = mainCoroutineRule.runBlockingTest {
 
         val response: Flow<DataState<ResponseModel>> = flow {
             emit(DataState.Error(Exception("Unauthorized")))
@@ -91,8 +89,6 @@ class LoginViewModelTest {
             email = "test@gmail.com",
             password = "test1234"
         )
-
-        advanceUntilIdle()
 
         val actualResponse = loginViewModel.loginState.getOrAwaitValue()
 

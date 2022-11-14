@@ -10,8 +10,7 @@ import com.anandarh.storyapp.utils.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -22,6 +21,7 @@ import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import java.io.File
 
+@Suppress("DEPRECATION")
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class PostStoryViewModelTest {
@@ -44,7 +44,7 @@ class PostStoryViewModelTest {
     }
 
     @Test
-    fun `Post New Story Success`(): Unit = mainCoroutineRule.testScope.runTest {
+    fun `Post New Story Success`(): Unit = mainCoroutineRule.runBlockingTest {
 
         val response: Flow<DataState<ResponseModel>> = flow {
             emit(DataState.Success(dummyResponse))
@@ -66,8 +66,6 @@ class PostStoryViewModelTest {
             lon = 0.0
         )
 
-        advanceUntilIdle()
-
         val actualResponse = postStoryViewModel.postState.getOrAwaitValue()
 
         assertNotNull(actualResponse)
@@ -79,7 +77,7 @@ class PostStoryViewModelTest {
     }
 
     @Test
-    fun `Post New Story Failed`(): Unit = mainCoroutineRule.testScope.runTest {
+    fun `Post New Story Failed`(): Unit = mainCoroutineRule.runBlockingTest {
 
         val response: Flow<DataState<ResponseModel>> = flow {
             emit(DataState.Error(Exception()))
@@ -100,8 +98,6 @@ class PostStoryViewModelTest {
             lat = 0.0,
             lon = 0.0
         )
-
-        advanceUntilIdle()
 
         val actualResponse = postStoryViewModel.postState.getOrAwaitValue()
 

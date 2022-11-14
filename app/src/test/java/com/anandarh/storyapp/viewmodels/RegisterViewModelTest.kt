@@ -10,8 +10,7 @@ import com.anandarh.storyapp.utils.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -21,6 +20,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 
+@Suppress("DEPRECATION")
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class RegisterViewModelTest {
@@ -43,7 +43,7 @@ class RegisterViewModelTest {
     }
 
     @Test
-    fun `Register Success`(): Unit = mainCoroutineRule.testScope.runTest {
+    fun `Register Success`(): Unit = mainCoroutineRule.runBlockingTest {
 
         val response: Flow<DataState<ResponseModel>> = flow {
             emit(DataState.Success(dummyResponse))
@@ -63,8 +63,6 @@ class RegisterViewModelTest {
             name = "test"
         )
 
-        advanceUntilIdle()
-
         val actualResponse = registerViewModel.registerState.getOrAwaitValue()
 
         assertNotNull(actualResponse)
@@ -76,7 +74,7 @@ class RegisterViewModelTest {
     }
 
     @Test
-    fun `Register Failed`(): Unit = mainCoroutineRule.testScope.runTest {
+    fun `Register Failed`(): Unit = mainCoroutineRule.runBlockingTest {
 
         val response: Flow<DataState<ResponseModel>> = flow {
             emit(DataState.Error(Exception()))
@@ -95,8 +93,6 @@ class RegisterViewModelTest {
             password = "test1234",
             name = "test"
         )
-
-        advanceUntilIdle()
 
         val actualResponse = registerViewModel.registerState.getOrAwaitValue()
 
