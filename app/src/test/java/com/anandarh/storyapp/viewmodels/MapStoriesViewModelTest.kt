@@ -58,21 +58,14 @@ class MapStoriesViewModelTest {
 
         val actualResponse = mapStoriesViewModel.storiesWithLocation.getOrAwaitValue()
 
-        when (actualResponse) {
-            is DataState.Success -> {
-                assertEquals(actualResponse.data.listStory?.size, 11)
-            }
-            else -> {
-                // ignore
-            }
-        }
 
+        assertTrue(actualResponse is DataState.Success)
         assertNotNull(actualResponse)
         assertEquals(
             actualResponse,
             DataState.Success(dummyResponse)
         )
-        assertTrue(actualResponse is DataState.Success)
+        assertEquals((actualResponse as DataState.Success).data.listStory?.size, 11)
     }
 
     @Test
