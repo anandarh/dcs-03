@@ -36,4 +36,6 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="refresh">Refresh</string>
     <string name="request_failed">Request Failed</string>
+    <string name="include_location">Include Location</string>
+    <string name="cannot_get_location">Cannot get location.</string>
 </resources>

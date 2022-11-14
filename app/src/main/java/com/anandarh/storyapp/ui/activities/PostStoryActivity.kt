@@ -24,6 +24,10 @@ import com.anandarh.storyapp.utils.exceptionResponse
 import com.anandarh.storyapp.viewmodels.PostStoryViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.squareup.picasso.Picasso
 import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
@@ -42,8 +46,8 @@ class PostStoryActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
     private var fileName: String? = null
     private var permissionType: Int? = null
-    private var lat: Double = -6.914744
-    private var lon: Double = 107.609810
+    private var lat: Double? = null
+    private var lon: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +61,6 @@ class PostStoryActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
         initializeAction()
         subscribeUI()
-        getMyLocation()
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
@@ -142,6 +145,15 @@ class PostStoryActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         binding.btnCamera.setOnClickListener { openCamera() }
         binding.btnGallery.setOnClickListener { openExplorer() }
         binding.btnPost.setOnClickListener { postStory() }
+
+        binding.scLocation.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                getMyLocation()
+            } else {
+                lat = null
+                lon = null
+            }
+        }
     }
 
     private fun subscribeUI() {
@@ -163,6 +175,25 @@ class PostStoryActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                 if (location != null) {
                     lat = location.latitude
                     lon = location.longitude
+                } else {
+                    fusedLocationClient.getCurrentLocation(
+                        Priority.PRIORITY_HIGH_ACCURACY,
+                        object : CancellationToken() {
+                            override fun onCanceledRequested(p0: OnTokenCanceledListener) =
+                                CancellationTokenSource().token
+
+                            override fun isCancellationRequested() = false
+                        })
+                        .addOnSuccessListener { currentLocation: Location? ->
+                            if (currentLocation == null)
+                                Toast.makeText(this, "Cannot get location.", Toast.LENGTH_SHORT)
+                                    .show()
+                            else {
+                                lat = currentLocation.latitude
+                                lon = currentLocation.longitude
+                            }
+
+                        }
                 }
             }
         } else {

@@ -36,4 +36,6 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="refresh">Refresh</string>
     <string name="request_failed">Request Gagal</string>
+    <string name="include_location">Sertakan Lokasi</string>
+    <string name="cannot_get_location">Tidak dapat lokasi.</string>
 </resources>
